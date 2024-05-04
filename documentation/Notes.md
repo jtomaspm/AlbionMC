@@ -24,7 +24,7 @@ FROM
 JOIN 
     CraftingSlot CS
   ON 
-    ItemDestinoId = I.ID
+    CS.ItemDestinoId = I.ID
 
 WHERE 
     I.Nome = 'Nome que o bot quer'
