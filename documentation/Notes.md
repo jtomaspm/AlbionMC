@@ -15,16 +15,23 @@
 
 ```sql
 SELECT
-    (SELECT Nome FROM Items WHERE ID = CS.ItemSourceId LIMIT 1) as Nome,
-    CS.Qtd as QTD,
-    Nome * QTD as Preço
+    ISource.Nome as ITEM,
+    CS.Qtd as QUANTITY,
+    ISource.Preço as PRICE,
+    ISource.Preço * CS.Qtd as TOTAL_PRICE
+    
 FROM
     Items I
 
 JOIN 
     CraftingSlot CS
   ON 
-    CS.ItemDestinoId = I.ID
+    CS.ItemDestinoID = I.ID
+
+JOIN
+    Items ISource
+  ON
+    CS.ItemSourceID = ISource.ID
 
 WHERE 
     I.Nome = 'Nome que o bot quer'
