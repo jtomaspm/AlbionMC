@@ -1,16 +1,28 @@
+from colorama import Fore, Style
+
 from backend.core.Item import Item, CraftingSlot
 
+# Materiais_item
 Steel_Bar = Item("Steel Bar", 270, 400, "Lymhurst", 0)
+Bronze_Bar = Item("Bronze Bar", 100, 90, "Lymhurst", 0)
+Copper_Bar = Item("Copper Bar", 60, 55, "Lymhurst", 0)
+
+# Materiais_craft
+Craft_Steel_Bar = CraftingSlot(1, "Steel_Bar", 2, "Bronze Bar")
+Craft_Steel_Bar2 = CraftingSlot(1, "Steel_Bar", 1, "Copper Bar")
+
+# Items_item
 Adepts_Soldier_Boots = Item("Adept's Soldier Boots", 3000, 2700, "Lymhurst", 0)
+
+# Items_craft
 Craft_Adepts_Soldier_Boots = CraftingSlot(1, "Adept's Soldier Boots", 8, "Steel Bar")
 
-
 def calculadora(item):
-    # Lista para armazenar os resultados
+    print(Fore.YELLOW, f'Vamos calcular qual a maneira mais barata de craftar o item {item.nome}', Style.RESET_ALL)
+    # Lista Temporária para armazenar os resultados
     resultados = []
 
     # Inicializar o preço de crafting como infinito
-    menor_preco_crafting = float('inf')
     preco_total_crafting = float('inf')
 
     # Iterando sobre cada instância de CraftingSlot
@@ -22,17 +34,14 @@ def calculadora(item):
             # Encontrando o item de origem correspondente
             for source_item in Item.instances:
                 if source_item.nome == slot.item_source_nome:
-                    # Calculando o preço de crafting total
-                    preco_total_crafting = source_item.preco_craft * slot.qtd
-                    # Verificando se o preço de crafting é menor do que o menor preço de crafting encontrado até agora
-                    if preco_total_crafting < menor_preco_crafting:
-                        menor_preco_crafting = preco_total_crafting
+                    if source_item.preco_craft and source_item.preco_craft <= source_item.preco_mercado:
+                        print(Fore.GREEN, f'O Item {source_item.nome} é mais barato craftar que comprar. Preço para craftar: {source_item.preco_craft}', Style.RESET_ALL)
+                        preco_total_crafting = source_item.preco_craft * slot.qtd
+                    else:
+                        print(Fore.GREEN, f'O Item {source_item.nome} é mais barato comprar que craftar. Preço para comprar: {source_item.preco_mercado}', Style.RESET_ALL)
+                        preco_total_crafting = source_item.preco_mercado * slot.qtd
 
-    # Atualizar o preço de crafting do item com o menor preço encontrado
-    item.preco_craft = preco_total_crafting
-
-    # Return não é necessário pois esta é uma função de update, só para visualização
-    return resultados, item.preco_craft
+    return resultados, preco_total_crafting
 
 # Exemplo de uso
 resultado, novo_preco_craft = calculadora(Adepts_Soldier_Boots)
