@@ -6,20 +6,27 @@ AlbionMC é um projeto de Python para calcular os custos de craft de itens no jo
 O AlbionMC é uma ferramenta útil para jogadores de Albion Online que desejam calcular os custos de craft de itens e materiais no jogo. Ele analisa as receitas de craft disponíveis e determina os custos totais com base nos preços de mercado dos materiais ou em seus custos de craft individuais.
 
 # Instalação
-Para instalar e executar o AlbionMC, siga estas etapas:
+Siga estas etapas para configurar e instalar o AlbionMC em seu sistema:
 
-Certifique-se de ter o Python instalado em seu sistema. Você pode baixá-lo em python.org.
-Clone este repositório para o seu computador usando o comando Git:
+1. **Python**: Certifique-se de ter o Python instalado em seu sistema. Você pode baixá-lo em [python.org](https://www.python.org/).
 
-git clone https://github.com/seu-usuario/albionmc.git
+2. **Clone do Repositório**: Use o Git para clonar este repositório para o seu computador:
 
-Navegue até o diretório do projeto:
+    ```
+    git clone https://github.com/seu-usuario/albionmc.git
+    ```
 
-cd albionmc
+3. **Navegue até o Diretório**: Abra um terminal e navegue até o diretório do projeto:
 
-Instale as dependências do projeto usando o pip:
+    ```
+    cd albionmc
+    ```
 
-pip install -r requirements.txt
+4. **Instale as Dependências**: Use o pip para instalar as dependências do projeto:
+
+    ```
+    pip install -r requirements.txt
+    ```
 
 # Uso
 Após a instalação, você pode usar o AlbionMC executando o arquivo main.py. Certifique-se de ter os dados dos itens e receitas de craft configurados corretamente no projeto antes de executá-lo.
