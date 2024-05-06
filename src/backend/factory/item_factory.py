@@ -1,4 +1,5 @@
-from ..core.Item import Item, CraftingSlot
+from ..core.item import Item
+from ..core.crafting_slot import CraftingSlot
 
 # Materiais_item
 Steel_Bar = lambda : Item("Steel Bar", 750, 400, "Lymhurst", 0)
