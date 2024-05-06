@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from ..controller.test_controller import testRouter
+from ..controller.test_controller import test_router
 
 
 def setup_routes(app: FastAPI, prefix: str):
-   app.include_router(testRouter, prefix=prefix)
+   app.include_router(test_router, prefix=prefix)

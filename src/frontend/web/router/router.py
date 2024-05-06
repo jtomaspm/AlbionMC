@@ -1,7 +1,11 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
-from ..controller.test_controller import testRouter
+from ..controller.test_controller import test_router
+from ..controller.home_controller import home_router
 
 
 def setup_routes(app: FastAPI, prefix: str):
-   app.include_router(testRouter, prefix=prefix)
+   app.mount("/static", StaticFiles(directory="src/frontend/web/static"), name="static")
+   app.include_router(test_router, prefix=prefix)
+   app.include_router(home_router, prefix=prefix)

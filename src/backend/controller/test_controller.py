@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-testRouter = APIRouter()
+test_router = APIRouter()
 
-@testRouter.get("/")
+@test_router.get("/")
 def read_root():
     return {"message": "Hello, BACKEND!"}
