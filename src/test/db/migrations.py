@@ -9,6 +9,7 @@ sys.path.append(project_root)
 
 import psycopg2
 from src.backend.dal.posgres.migrations.migrations import run_migrations
+from src.backend.dal.posgres.seed.seed import run_seed
 
 def test_migrations():
     dbname = 'AlbionMC'
@@ -20,6 +21,7 @@ def test_migrations():
     connection = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
 
     run_migrations(connection=connection)
+    run_seed(connection=connection)
 
     connection.close()
 

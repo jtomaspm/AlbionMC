@@ -1,6 +1,7 @@
 CREATE TABLE item_prices (
     item_id INTEGER NOT NULL,
-    price NUMERIC(10, 2) NOT NULL,
+    price INTEGER NOT NULL,
+    city VARCHAR(100) NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_by VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
