@@ -32,6 +32,14 @@ Follow these steps to set up and install AlbionMC on your system:
 uvicorn src.main:app --reload
 ```
 
+# Testing
+
+In order to have a test database deployed run the script:
+
+```
+python ./src/test/db/launch_db.py
+```
+
 # Contribution
 Contributions are welcome! If you'd like to improve AlbionMC, feel free to send pull requests or open issues in the GitHub repository.
 
