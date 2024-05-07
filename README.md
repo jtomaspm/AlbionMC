@@ -37,7 +37,7 @@ uvicorn src.main:app --reload
 In order to have a test database deployed run the script:
 
 ```
-python ./src/test/launch_db.py
+python ./src/test/db/launch_db.py
 ```
 
 # Contribution
