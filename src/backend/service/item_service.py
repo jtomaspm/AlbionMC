@@ -1,5 +1,5 @@
 from colorama import Fore, Style
-from ..core.item import Item
+from ..core.item import Item_OLD
 from ..core.crafting_slot import CraftingSlot
 
 def update_crafting_price(item):
@@ -11,7 +11,7 @@ def update_crafting_price(item):
     preco_craft = 0
 
     # Primeiro, iterar sobre cada instância de Item
-    for item_choose in Item.instances:
+    for item_choose in Item_OLD.instances:
         # Verificar se há uma receita de crafting que requer este item
         for craftingSlot in CraftingSlot.instances:
             # Verificar se o nome do item corresponde ao fornecido como entrada
