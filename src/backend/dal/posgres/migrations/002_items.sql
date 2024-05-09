@@ -8,5 +8,7 @@ CREATE TABLE items (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_by VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    created_by VARCHAR(100) NOT NULL
+    created_by VARCHAR(100) NOT NULL,
+    data_source_id INTEGER NOT NULL,
+    FOREIGN KEY (data_source_id) REFERENCES data_sources(id)
 );
