@@ -1,6 +1,6 @@
 from typing import List
 
-from injector import Injector
+from injector import inject
 from src.backend.core.item import Item
 from src.backend.dal.posgres.db_context import DbContext
 from psycopg2.extensions import connection
@@ -9,8 +9,9 @@ from psycopg2.extensions import connection
 class ItemService:
     conn: connection
 
-    def __init__(self, injector: Injector) -> None:
-        self.conn = injector.get(DbContext).conn
+    @inject
+    def __init__(self, ctx: DbContext) -> None:
+        self.conn = ctx.conn
 
     def new(self, record) -> None:
         with self.conn.cursor() as cur:

@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class DbSettings:
     dbname      :str
     user        :str

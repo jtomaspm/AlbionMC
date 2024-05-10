@@ -9,8 +9,8 @@ from psycopg2.extensions import connection
 class DataSourceService:
     conn: connection
 
-    def __init__(self, injector: Injector) -> None:
-        self.conn = injector.get(DbContext)
+    def __init__(self, ctx: DbContext) -> None:
+        self.conn = ctx.conn
 
     def new(self, record:DataSource):
         with self.conn.cursor() as cur:
