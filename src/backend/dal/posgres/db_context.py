@@ -1,3 +1,4 @@
+from injector import Injector
 import psycopg2
 from psycopg2.extensions import connection
 from src.backend.core.settings.db_settings import DbSettings
@@ -5,14 +6,9 @@ from src.backend.core.settings.db_settings import DbSettings
 class DbContext:
     config: DbSettings
     conn: connection | None
-    def __init__(self, config: DbSettings) -> None:
-        self.config = config
-
-    def __enter__(self) -> connection:
-        return self.open()
-
-    def __exit__(self):
-        self.close()
+    def __init__(self, injector: Injector) -> None:
+        self.config = injector.get(DbSettings)
+        self.open()
 
     def open(self):
         self.close()
