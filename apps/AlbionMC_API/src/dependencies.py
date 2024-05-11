@@ -1,4 +1,5 @@
 import os
+from src.service.cache_service import CacheService
 from src.service.auth_service import GithubAuthService
 from src.core.settings.app_settings import AppSettings
 from src.repository.crafting_slot_repository import CraftingSlotRepository
@@ -8,6 +9,7 @@ from src.dal.posgres.db_context import DbContext
 from src.repository.data_source_repository import DataSourceRepository
 from src.repository.item_repository import ItemRepository
 from injector import Injector, Module
+from pyignite import Client
 
 
 class AppModule(Module):
@@ -23,10 +25,14 @@ class AppModule(Module):
             'github_client_id'      : os.environ.get('GITHUB_CLIENT_ID'),
             'github_client_secret'  : os.environ.get('GITHUB_CLIENT_SECRET'),
         })
+        cache_con = Client()
+        cache_con.connect('ignite', 10800)
 
         ########## Binds ##########
         binder.bind(DbSettings, to=db_config)
         binder.bind(AppSettings, to=app_config)
+        binder.bind(Client, to=cache_con)
+        binder.bind(CacheService)
         binder.bind(DbContext)
         binder.bind(DataSourceRepository)
         binder.bind(ItemRepository)

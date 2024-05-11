@@ -23,6 +23,7 @@ services:
       - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
     depends_on:
       - postgres
+      - ignite
     networks:
       - appnet
 
@@ -37,5 +38,15 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    networks:
+      - appnet
+
+  ignite:
+    image: apacheignite/ignite
+    ports:
+      - "10800:10800"
+      - "47100:47100"
+      - "47500:47500"
+      - "49112:49112"
     networks:
       - appnet
