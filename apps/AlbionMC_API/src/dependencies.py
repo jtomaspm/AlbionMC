@@ -1,3 +1,5 @@
+from src.repository.crafting_slot_repository import CraftingSlotRepository
+from src.repository.item_price_repository import ItemPriceRepository
 from src.core.settings.db_settings import DbSettings
 from src.dal.posgres.db_context import DbContext
 from src.repository.data_source_repository import DataSourceRepository
@@ -14,10 +16,15 @@ class AppModule(Module):
             host='localhost',
             port='5432',
         )
+
+        ########## Binds ##########
         binder.bind(DbSettings, to=db_config)
         binder.bind(DbContext)
         binder.bind(DataSourceRepository)
         binder.bind(ItemRepository)
+        binder.bind(CraftingSlotRepository)
+        binder.bind(ItemPriceRepository)
+        ###########################
 
 def configure_injector() -> Injector:
     injector = Injector(modules=[AppModule()])
