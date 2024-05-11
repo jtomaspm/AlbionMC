@@ -13,11 +13,11 @@ from src.dependencies import configure_injector
 injector = configure_injector()
 
 @crafting_slot_router.get("/")
-def get_crafting_slots(crafting_slot_repo: CraftingSlotRepository = Depends(lambda: injector.get(CraftingSlotRepository))):
+def get_crafting_slots(crafting_slot_repo: CraftingSlotRepository = Depends(lambda: injector.get(CraftingSlotRepository))) -> List[CraftingSlot]:
     return crafting_slot_repo.get_all()
 
 @crafting_slot_router.get("/{craft_id}/{destination_item_id}/{source_item_id}")
-def get_crafting_slot(craft_id: int, destination_item_id: int, source_item_id: int, crafting_slot_repo: CraftingSlotRepository = Depends(lambda: injector.get(CraftingSlotRepository))):
+def get_crafting_slot(craft_id: int, destination_item_id: int, source_item_id: int, crafting_slot_repo: CraftingSlotRepository = Depends(lambda: injector.get(CraftingSlotRepository))) -> CraftingSlot:
     crafting_slot = crafting_slot_repo.get(craft_id, destination_item_id, source_item_id)
     if crafting_slot:
         return crafting_slot

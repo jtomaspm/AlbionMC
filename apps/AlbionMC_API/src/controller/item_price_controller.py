@@ -11,11 +11,11 @@ from src.dependencies import configure_injector
 injector = configure_injector()
 
 @item_price_router.get("/")
-def get_item_prices(item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
+def get_item_prices(item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))) -> List[ItemPrice]:
     return item_price_repo.get_all()
 
 @item_price_router.get("/{item_id}")
-def get_item_price(item_id: int, created_at: str, item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
+def get_item_price(item_id: int, created_at: str, item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))) -> ItemPrice:
     item_price = item_price_repo.get(item_id, datetime.fromtimestamp(created_at))
     if item_price:
         return item_price

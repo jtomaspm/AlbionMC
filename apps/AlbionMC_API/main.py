@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
 
-
 from src.router.api_router import setup_routes
 
 app = FastAPI()

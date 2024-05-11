@@ -12,11 +12,11 @@ injector = configure_injector()
 
 
 @item_router.get("/")
-def get(item_repo: ItemRepository = Depends(lambda: injector.get(ItemRepository))):
+def get(item_repo: ItemRepository = Depends(lambda: injector.get(ItemRepository))) -> List[Item]:
     return item_repo.get_all()
 
 @item_router.get("/{item_id}")
-def get_item(item_id: int, item_repo: ItemRepository = Depends(lambda: injector.get(ItemRepository))):
+def get_item(item_id: int, item_repo: ItemRepository = Depends(lambda: injector.get(ItemRepository))) -> Item:
     item = item_repo.get(item_id)
     if item:
         return item
