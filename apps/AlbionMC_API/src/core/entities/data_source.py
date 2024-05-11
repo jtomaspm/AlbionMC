@@ -1,13 +1,14 @@
 from dataclasses import dataclass
-import datetime
+
+from pydantic import BaseModel
 
 
 @dataclass
-class DataSource:
+class DataSource(BaseModel):
     id          : int
     name        : str
     trust_level : int
-    updated_at  : datetime
+    updated_at  : str
     updated_by  : str
-    created_at  : datetime
+    created_at  : str
     created_by  : str

@@ -1,11 +1,12 @@
 
 from dataclasses import dataclass
-import datetime
 from typing import List
+
+from pydantic import BaseModel
 
 
 @dataclass
-class Item:
+class Item(BaseModel):
     id              : int
     unique_name     : str
     name            : str
@@ -14,7 +15,10 @@ class Item:
     enchant         : int
     description     : str
     data_source_id  : int
-    updated_at      : datetime
+    updated_at      : str
     updated_by      : str
-    created_at      : datetime
+    created_at      : str
     created_by      : str
+
+    class Config:
+        arbitrary_types_allowed = True

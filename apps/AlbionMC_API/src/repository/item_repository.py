@@ -22,7 +22,7 @@ class ItemRepository:
             )
             self.conn.commit()
     
-    def new_batch(self, records:List[Item], user_name: str):
+    def new_batch(self, records:List[Item], user_name: str = "repository"):
         with self.conn.cursor() as cur:
             query = "INSERT INTO items (unique_name, english_name, tags, tier, enchant, item_description, data_source_id, updated_by, created_by) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
             cur.executemany(query=query, vars=[[record.unique_name, record.name, record.tags, record.tier, record.enchant, record.description, record.data_source_id, user_name, user_name] for record in records])
@@ -45,7 +45,7 @@ class ItemRepository:
             rows = cur.fetchall()
             return [Item(*row) for row in rows]
 
-    def update(self, record: Item, user_name: str) -> None:
+    def update(self, record: Item, user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:
             query = "UPDATE items SET unique_name = %s, english_name = %s, tags = %s, tier = %s, enchant = %s, item_description = %s, data_source_id = %s, updated_by = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s"
             cur.execute(query, (record.unique_name, record.name, record.tags, record.tier, record.enchant, record.description, record.data_source_id, user_name, record.id))

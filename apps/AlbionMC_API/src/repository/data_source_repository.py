@@ -14,7 +14,7 @@ class DataSourceRepository:
     def __init__(self, ctx: DbContext) -> None:
         self.conn = ctx.conn
 
-    def new(self, record: DataSource, user_name: str) -> None:
+    def new(self, record: DataSource, user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:
             query = "INSERT INTO data_sources (data_source_name, trust_level, updated_by, created_by) VALUES (%s, %s, %s, %s)"
             cur.execute(
@@ -23,7 +23,7 @@ class DataSourceRepository:
             )
             self.conn.commit()
 
-    def new_batch(self, records: List[DataSource], user_name: str) -> None:
+    def new_batch(self, records: List[DataSource], user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:
             query = "INSERT INTO data_sources (data_source_name, trust_level, updated_by, created_by) VALUES (%s, %s, %s, %s)"
             cur.executemany(query=query, vars=[[record.name, record.trust_level, user_name, user_name] for record in records])
@@ -46,7 +46,7 @@ class DataSourceRepository:
             rows = cur.fetchall()
             return [DataSource(*row) for row in rows]
 
-    def update(self, record: DataSource, user_name: str) -> None:
+    def update(self, record: DataSource, user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:
             query = "UPDATE data_sources SET data_source_name = %s, trust_level = %s, updated_by = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s"
             cur.execute(query, (record.name, record.trust_level, user_name, record.id))

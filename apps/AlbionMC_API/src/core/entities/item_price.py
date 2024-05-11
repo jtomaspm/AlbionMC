@@ -1,14 +1,15 @@
 from dataclasses import dataclass
-import datetime
+
+from pydantic import BaseModel
 
 
 @dataclass
-class ItemPrice:
+class ItemPrice(BaseModel):
     item_id         : int
     price           : int
     city            : str
     data_source_id  : int
-    updated_at      : datetime
+    updated_at      : str
     updated_by      : str
-    created_at      : datetime
+    created_at      : str
     created_by      : str

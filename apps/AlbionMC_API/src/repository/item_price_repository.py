@@ -1,5 +1,4 @@
 from typing import List
-import datetime
 from src.core.entities.item_price import ItemPrice
 from src.dal.posgres.db_context import DbContext
 from injector import inject
@@ -12,7 +11,7 @@ class ItemPriceRepository:
     def __init__(self, ctx: DbContext) -> None:
         self.conn = ctx.conn
 
-    def new(self, record: ItemPrice, user_name: str) -> None:
+    def new(self, record: ItemPrice, user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:
             query = "INSERT INTO item_prices (item_id, price, city, data_source_id, updated_by, created_by) VALUES (%s, %s, %s, %s, %s, %s)"
             cur.execute(
@@ -21,13 +20,13 @@ class ItemPriceRepository:
             )
             self.conn.commit()
 
-    def new_batch(self, records: List[ItemPrice], user_name: str) -> None:
+    def new_batch(self, records: List[ItemPrice], user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:
             query = "INSERT INTO item_prices (item_id, price, city, data_source_id, updated_by, created_by) VALUES (%s, %s, %s, %s, %s, %s)"
             cur.executemany(query=query, vars=[[record.item_id, record.price, record.city, record.data_source_id, user_name, user_name] for record in records])
             self.conn.commit()
 
-    def get(self, item_id: int, created_at: datetime) -> ItemPrice | None:
+    def get(self, item_id: int, created_at: str) -> ItemPrice | None:
         with self.conn.cursor() as cur:
             query = "SELECT item_id, price, city, data_source_id, updated_at, updated_by, created_at, created_by FROM item_prices WHERE item_id = %s AND created_at = %s"
             cur.execute(query, (item_id, created_at))
@@ -44,13 +43,13 @@ class ItemPriceRepository:
             rows = cur.fetchall()
             return [ItemPrice(*row) for row in rows]
 
-    def update(self, record: ItemPrice, user_name: str) -> None:
+    def update(self, record: ItemPrice, user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:
             query = "UPDATE item_prices SET price = %s, city = %s, data_source_id = %s, updated_by = %s, updated_at = CURRENT_TIMESTAMP WHERE item_id = %s AND created_at = %s"
             cur.execute(query, (record.price, record.city, record.data_source_id, user_name, record.item_id, record.created_at))
             self.conn.commit()
 
-    def delete(self, item_id: int, created_at: datetime) -> None:
+    def delete(self, item_id: int, created_at: str) -> None:
         with self.conn.cursor() as cur:
             query = "DELETE FROM item_prices WHERE item_id = %s AND created_at = %s"
             cur.execute(query, (item_id, created_at))
