@@ -1,24 +1,19 @@
-
-from dataclasses import dataclass
-from typing import List
+from datetime import datetime
+from typing import List, Optional
 
 from pydantic import BaseModel
 
 
-@dataclass
 class Item(BaseModel):
-    id              : int
+    id              : Optional[int] = None
     unique_name     : str
     name            : str
     tags            : List[str]
-    tier            : int
-    enchant         : int
-    description     : str
+    tier            : Optional[int] = None
+    enchant         : Optional[int] = None
+    description     : Optional[str] = None
     data_source_id  : int
-    updated_at      : str
-    updated_by      : str
-    created_at      : str
-    created_by      : str
-
-    class Config:
-        arbitrary_types_allowed = True
+    updated_at      : Optional[datetime] = None
+    updated_by      : Optional[str] = None
+    created_at      : Optional[datetime] = None
+    created_by      : Optional[str] = None

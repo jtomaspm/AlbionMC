@@ -1,14 +1,14 @@
-from dataclasses import dataclass
+from datetime import datetime
+from typing import Any, List, Optional
 
 from pydantic import BaseModel
 
 
-@dataclass
 class DataSource(BaseModel):
-    id          : int
+    id          : Optional[int] = None
     name        : str
     trust_level : int
-    updated_at  : str
-    updated_by  : str
-    created_at  : str
-    created_by  : str
+    updated_at  : Optional[datetime] = None
+    updated_by  : Optional[str] = None
+    created_at  : Optional[datetime] = None
+    created_by  : Optional[str] = None

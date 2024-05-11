@@ -1,4 +1,5 @@
 from dataclasses import asdict
+from datetime import datetime
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from src.core.entities.item_price import ItemPrice
@@ -11,13 +12,13 @@ injector = configure_injector()
 
 @item_price_router.get("/")
 def get_item_prices(item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
-    return [asdict(ip) for ip in item_price_repo.get_all()]
+    return item_price_repo.get_all()
 
 @item_price_router.get("/{item_id}")
 def get_item_price(item_id: int, created_at: str, item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
-    item_price = item_price_repo.get(item_id, created_at)
+    item_price = item_price_repo.get(item_id, datetime.fromtimestamp(created_at))
     if item_price:
-        return asdict(item_price)
+        return item_price
     else:
         raise HTTPException(status_code=404, detail="Item price not found")
 
@@ -36,7 +37,7 @@ def create_item_prices(item_prices: List[ItemPrice], item_price_repo: ItemPriceR
 
 @item_price_router.put("/{item_id}")
 def update_item_price(item_id: int, created_at: str, item_price: ItemPrice, item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
-    existing_item_price = item_price_repo.get(item_id, created_at)
+    existing_item_price = item_price_repo.get(item_id, datetime.fromtimestamp(created_at))
     if existing_item_price:
         item_price_repo.update(item_price)
         return {"message": "Item price updated successfully"}
@@ -45,9 +46,9 @@ def update_item_price(item_id: int, created_at: str, item_price: ItemPrice, item
 
 @item_price_router.delete("/{item_id}")
 def delete_item_price(item_id: int, created_at: str, item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
-    existing_item_price = item_price_repo.get(item_id, created_at)
+    existing_item_price = item_price_repo.get(item_id, datetime.fromtimestamp(created_at))
     if existing_item_price:
-        item_price_repo.delete(item_id, created_at)
+        item_price_repo.delete(item_id, datetime.fromtimestamp(created_at))
         return {"message": "Item price deleted successfully"}
     else:
         raise HTTPException(status_code=404, detail="Item price not found")

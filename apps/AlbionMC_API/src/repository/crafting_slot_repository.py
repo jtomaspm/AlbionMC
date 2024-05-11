@@ -33,7 +33,17 @@ class CraftingSlotRepository:
             cur.execute(query, (craft_id, destination_item_id, source_item_id))
             row = cur.fetchone()
             if row:
-                return CraftingSlot(*row)
+                return CraftingSlot(**{
+                    "craft_id" : row[0],
+                    "destination_item_id" : row[1],
+                    "source_item_id" : row[2],
+                    "source_item_quantity" : row[3],
+                    "data_source_id" : row[4],
+                    "updated_at" : row[5],
+                    "updated_by" : row[6],
+                    "created_at" : row[7],
+                    "created_by" : row[8],
+                })
             else:
                 return None
 
@@ -42,7 +52,17 @@ class CraftingSlotRepository:
             query = "SELECT craft_id, destination_item_id, source_item_id, source_item_quantity, data_source_id, updated_at, updated_by, created_at, created_by FROM crafting_slots"
             cur.execute(query)
             rows = cur.fetchall()
-            return [CraftingSlot(*row) for row in rows]
+            return [CraftingSlot(**{
+                    "craft_id" : row[0],
+                    "destination_item_id" : row[1],
+                    "source_item_id" : row[2],
+                    "source_item_quantity" : row[3],
+                    "data_source_id" : row[4],
+                    "updated_at" : row[5],
+                    "updated_by" : row[6],
+                    "created_at" : row[7],
+                    "created_by" : row[8],
+                }) for row in rows]
 
     def update(self, record: CraftingSlot, user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:

@@ -13,7 +13,7 @@ class ItemRepository:
     def __init__(self, ctx: DbContext) -> None:
         self.conn = ctx.conn
 
-    def new(self, record: Item, user_name) -> None:
+    def new(self, record: Item, user_name:str = "repository") -> None:
         with self.conn.cursor() as cur:
             query = "INSERT INTO items (unique_name, english_name, tags, tier, enchant, item_description, data_source_id, updated_by, created_by) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
             cur.execute(
@@ -34,7 +34,20 @@ class ItemRepository:
             cur.execute(query, (record_id,))
             row = cur.fetchone()
             if row:
-                return Item(*row)
+                return Item(**{
+                    "id" : row[0],
+                    "unique_name" : row[1],
+                    "name" : row[2],
+                    "tags" : row[3],
+                    "tier" : row[4],
+                    "enchant" : row[5],
+                    "description" : row[6],
+                    "data_source_id" : row[7],
+                    "updated_at" : row[8],
+                    "updated_by" : row[9],
+                    "created_at" : row[10],
+                    "created_by" : row[11],
+                })
             else:
                 return None
 
@@ -43,7 +56,20 @@ class ItemRepository:
             query = "SELECT id, unique_name, english_name, tags, tier, enchant, item_description, data_source_id, updated_at, updated_by, created_at, created_by FROM items"
             cur.execute(query)
             rows = cur.fetchall()
-            return [Item(*row) for row in rows]
+            return [Item(**{
+                    "id" : row[0],
+                    "unique_name" : row[1],
+                    "name" : row[2],
+                    "tags" : row[3],
+                    "tier" : row[4],
+                    "enchant" : row[5],
+                    "description" : row[6],
+                    "data_source_id" : row[7],
+                    "updated_at" : row[8],
+                    "updated_by" : row[9],
+                    "created_at" : row[10],
+                    "created_by" : row[11],
+                }) for row in rows]
 
     def update(self, record: Item, user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:

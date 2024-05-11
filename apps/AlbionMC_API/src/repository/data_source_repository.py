@@ -35,7 +35,16 @@ class DataSourceRepository:
             cur.execute(query, (record_id,))
             row = cur.fetchone()
             if row:
-                return DataSource(*row)
+                data_dict = {
+                    "id": row[0],
+                    "name": row[1],
+                    "trust_level": row[2],
+                    "updated_at": row[3],
+                    "updated_by": row[4],
+                    "created_at": row[5],
+                    "created_by": row[6]
+                }
+                return DataSource(**data_dict)
             else:
                 return None
 
@@ -44,7 +53,15 @@ class DataSourceRepository:
             query = "SELECT id, data_source_name, trust_level, updated_at, updated_by, created_at, created_by FROM data_sources"
             cur.execute(query)
             rows = cur.fetchall()
-            return [DataSource(*row) for row in rows]
+            return [DataSource(**{
+                    "id": row[0],
+                    "name": row[1],
+                    "trust_level": row[2],
+                    "updated_at": row[3],
+                    "updated_by": row[4],
+                    "created_at": row[5],
+                    "created_by": row[6]
+                }) for row in rows]
 
     def update(self, record: DataSource, user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:

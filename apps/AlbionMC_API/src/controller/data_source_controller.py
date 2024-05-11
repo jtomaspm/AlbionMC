@@ -11,13 +11,13 @@ injector = configure_injector()
 
 @data_source_router.get("/")
 def get_data_sources(data_source_repo: DataSourceRepository = Depends(lambda: injector.get(DataSourceRepository))):
-    return [asdict(ds) for ds in data_source_repo.get_all()]
+    return data_source_repo.get_all()
 
 @data_source_router.get("/{data_source_id}")
 def get_data_source(data_source_id: int, data_source_repo: DataSourceRepository = Depends(lambda: injector.get(DataSourceRepository))):
     data_source = data_source_repo.get(data_source_id)
     if data_source:
-        return asdict(data_source)
+        return data_source
     else:
         raise HTTPException(status_code=404, detail="Data source not found")
 

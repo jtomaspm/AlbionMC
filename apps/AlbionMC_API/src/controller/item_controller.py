@@ -13,13 +13,13 @@ injector = configure_injector()
 
 @item_router.get("/")
 def get(item_repo: ItemRepository = Depends(lambda: injector.get(ItemRepository))):
-    return [asdict(i) for i in item_repo.get_all()]
+    return item_repo.get_all()
 
 @item_router.get("/{item_id}")
 def get_item(item_id: int, item_repo: ItemRepository = Depends(lambda: injector.get(ItemRepository))):
     item = item_repo.get(item_id)
     if item:
-        return asdict(item)
+        return item
     else:
         raise HTTPException(status_code=404)
 
