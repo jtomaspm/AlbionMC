@@ -1,8 +1,7 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class DbSettings:
+class DbSettings(BaseModel):
     dbname      :str
     user        :str
     password    :str
