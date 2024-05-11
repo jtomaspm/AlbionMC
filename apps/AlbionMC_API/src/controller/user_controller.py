@@ -1,6 +1,6 @@
 import os
 from typing import Any, Dict
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 
 github_router = APIRouter(prefix="/users/github", tags=["GitHub"])
@@ -15,11 +15,12 @@ async def github_login(auth_service: GithubAuthService = Depends(lambda: injecto
     return auth_service.login_user()
 
 @github_router.get("/code", description="Retrieves the user auth token.")
-async def handle_github_token(code: str) -> AuthToken:
-    return AuthToken(**{
-        'token' : code
-    })
+async def handle_github_code(code: str, auth_service: GithubAuthService = Depends(lambda: injector.get(GithubAuthService))) -> Dict[str, Any]:
+    return auth_service.handle_code(code)
 
 @github_router.get("/info")
 async def get_user_info(token: str, auth_service: GithubAuthService = Depends(lambda: injector.get(GithubAuthService))) -> Dict[str, Any]:
-    return auth_service.get_user_info(code=token)
+    user = auth_service.get_user_info(token=token)
+    if user:
+        return user
+    raise HTTPException(status_code=401, detail="Not authenticated")

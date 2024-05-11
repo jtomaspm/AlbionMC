@@ -1,7 +1,7 @@
 from dataclasses import asdict
 from datetime import datetime
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from src.core.entities.item_price import ItemPrice
 from src.repository.item_price_repository import ItemPriceRepository
 
@@ -23,23 +23,23 @@ def get_item_price(item_id: int, created_at: str, item_price_repo: ItemPriceRepo
         raise HTTPException(status_code=404, detail="Item price not found")
 
 @item_price_router.post("/")
-def create_item_price(item_price: ItemPrice, item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
-    item_price_repo.new(item_price)
+def create_item_price(request: Request, item_price: ItemPrice, item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
+    item_price_repo.new(item_price, request.state.user['login'])
     return {"message": "Item price created successfully"}
 
 @item_price_router.post("/batch")
-def create_item_prices(item_prices: List[ItemPrice], item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
+def create_item_prices(request: Request, item_prices: List[ItemPrice], item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
     try:
-        item_price_repo.new_batch(item_prices)
+        item_price_repo.new_batch(item_prices, request.state.user['login'])
         return {"message": "Item prices created successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @item_price_router.put("/{item_id}")
-def update_item_price(item_id: int, created_at: str, item_price: ItemPrice, item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
+def update_item_price(request: Request, item_id: int, created_at: str, item_price: ItemPrice, item_price_repo: ItemPriceRepository = Depends(lambda: injector.get(ItemPriceRepository))):
     existing_item_price = item_price_repo.get(item_id, datetime.fromtimestamp(created_at))
     if existing_item_price:
-        item_price_repo.update(item_price)
+        item_price_repo.update(item_price, request.state.user['login'])
         return {"message": "Item price updated successfully"}
     else:
         raise HTTPException(status_code=404, detail="Item price not found")
