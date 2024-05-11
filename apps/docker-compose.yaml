@@ -1,0 +1,39 @@
+name: albionmc
+
+networks:
+  appnet:
+
+volumes:
+  postgres_data:
+
+services:
+  api:
+    build: 
+      context: AlbionMC_API
+      dockerfile: Dockerfile
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DBNAME=${POSTGRES_DBNAME}
+    depends_on:
+      - postgres
+    networks:
+      - appnet
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DBNAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    networks:
+      - appnet
