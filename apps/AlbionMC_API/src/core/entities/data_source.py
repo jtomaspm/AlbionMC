@@ -4,7 +4,7 @@ import datetime
 
 @dataclass
 class DataSource:
-    id          : int | None
+    id          : int
     name        : str
     trust_level : int
     updated_at  : datetime

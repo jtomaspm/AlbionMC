@@ -1,4 +1,4 @@
-from src.core.item import Item
+from src.core.entities.item import Item
 
 
 class ItemService:

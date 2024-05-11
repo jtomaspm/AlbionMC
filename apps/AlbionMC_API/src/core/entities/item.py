@@ -6,7 +6,7 @@ from typing import List
 
 @dataclass
 class Item:
-    id              : int | None
+    id              : int
     unique_name     : str
     name            : str
     tags            : List[str]

@@ -2,7 +2,7 @@ from typing import List
 
 from injector import inject
 
-from src.core.data_source import DataSource
+from src.core.entities.data_source import DataSource
 from src.dal.posgres.db_context import DbContext
 from psycopg2.extensions import connection
 

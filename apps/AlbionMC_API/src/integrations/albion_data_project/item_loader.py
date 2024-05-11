@@ -2,7 +2,7 @@ import os
 import sys
 
 from src.service.file_service import FileService
-from src.core.item import Item, ItemBuilder
+from src.core.entities.item import Item, ItemBuilder
 from src.dependencies import configure_injector
 from injector import Injector
 

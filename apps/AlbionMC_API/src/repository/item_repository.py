@@ -1,6 +1,6 @@
 from typing import List
 
-from src.core.item import Item
+from src.core.entities.item import Item
 from src.dal.posgres.db_context import DbContext
 from injector import inject
 from psycopg2.extensions import connection
