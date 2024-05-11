@@ -1,3 +1,4 @@
+import os
 from src.repository.crafting_slot_repository import CraftingSlotRepository
 from src.repository.item_price_repository import ItemPriceRepository
 from src.core.settings.db_settings import DbSettings
@@ -10,11 +11,11 @@ from injector import Injector, Module, singleton
 class AppModule(Module):
     def configure(self, binder):
         db_config = DbSettings(
-            dbname='AlbionMC',
-            user='admin',
-            password='Albionmc123?',
-            host='localhost',
-            port='5432',
+            dbname=os.environ.get('POSTGRES_DBNAME'),
+            user=os.environ.get('POSTGRES_USER'),
+            password=os.environ.get('POSTGRES_PASSWORD'),
+            host=os.environ.get('POSTGRES_HOST'),
+            port=os.environ.get('POSTGRES_PORT'),
         )
 
         ########## Binds ##########
