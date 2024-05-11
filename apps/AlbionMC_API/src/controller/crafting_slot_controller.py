@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from dataclasses import asdict
 from typing import List
 
-crafting_slot_router = APIRouter(prefix="/crafting_slots")
+crafting_slot_router = APIRouter(prefix="/crafting_slots", tags=["Crafting Slots"])
 
 from src.dependencies import configure_injector
 injector = configure_injector()

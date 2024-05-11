@@ -35,7 +35,7 @@ class DataSourceRepository:
             cur.execute(query, (record_id,))
             row = cur.fetchone()
             if row:
-                data_dict = {
+                return DataSource(**{
                     "id": row[0],
                     "name": row[1],
                     "trust_level": row[2],
@@ -43,8 +43,7 @@ class DataSourceRepository:
                     "updated_by": row[4],
                     "created_at": row[5],
                     "created_by": row[6]
-                }
-                return DataSource(**data_dict)
+                })
             else:
                 return None
 

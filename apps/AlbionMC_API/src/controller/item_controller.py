@@ -5,7 +5,7 @@ from src.core.entities.item import Item
 from src.repository.item_repository import ItemRepository
 
 
-item_router = APIRouter(prefix="/items")
+item_router = APIRouter(prefix="/items", tags=["Items"])
 
 from src.dependencies import configure_injector
 injector = configure_injector()

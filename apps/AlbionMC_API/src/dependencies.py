@@ -5,7 +5,7 @@ from src.core.settings.db_settings import DbSettings
 from src.dal.posgres.db_context import DbContext
 from src.repository.data_source_repository import DataSourceRepository
 from src.repository.item_repository import ItemRepository
-from injector import Injector, Module, singleton
+from injector import Injector, Module
 
 
 class AppModule(Module):

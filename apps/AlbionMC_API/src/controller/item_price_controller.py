@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from src.core.entities.item_price import ItemPrice
 from src.repository.item_price_repository import ItemPriceRepository
 
-item_price_router = APIRouter(prefix="/item_prices")
+item_price_router = APIRouter(prefix="/item_prices", tags=["Item Prices"])
 
 from src.dependencies import configure_injector
 injector = configure_injector()

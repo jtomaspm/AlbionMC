@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from src.core.entities.data_source import DataSource
 from src.repository.data_source_repository import DataSourceRepository
 
-data_source_router = APIRouter(prefix="/data_sources")
+data_source_router = APIRouter(prefix="/data_sources", tags=["Data Sources"])
 
 from src.dependencies import configure_injector
 injector = configure_injector()
