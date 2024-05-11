@@ -19,6 +19,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DBNAME=${POSTGRES_DBNAME}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
     depends_on:
       - postgres
     networks:
