@@ -20,7 +20,7 @@ injector = configure_injector()
 class AuthenticationMiddleware(BaseHTTPMiddleware):
     def __init__(self, app):
         super().__init__(app)
-        self.excluded_routes: List[str] = ["/api/users/github", "/docks"]
+        self.excluded_routes: List[str] = ["/api/users/github", "/docs", "/openapi.json"]
 
     async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         if not any(request.url.path.startswith(route) for route in self.excluded_routes):
