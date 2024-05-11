@@ -1,4 +1,6 @@
 from dotenv import load_dotenv
+
+from src.middleware.setup import setup_middleware
 load_dotenv()
 
 
@@ -44,6 +46,7 @@ app = FastAPI(
 
 
 setup_routes(app, '/api')
+setup_middleware(app)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=3000)

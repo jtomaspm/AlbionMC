@@ -9,7 +9,7 @@ volumes:
 services:
   api:
     build: 
-      context: AlbionMC_API
+      context: AlbionMC_api
       dockerfile: Dockerfile
     ports:
       - "${API_PORT}:${API_PORT}"
