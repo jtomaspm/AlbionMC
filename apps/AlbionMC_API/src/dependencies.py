@@ -1,7 +1,7 @@
 from src.core.settings.db_settings import DbSettings
 from src.dal.posgres.db_context import DbContext
-from src.service.data_source_service import DataSourceService
-from src.service.item_service import ItemService
+from src.repository.data_source_repository import DataSourceRepository
+from src.repository.item_repository import ItemRepository
 from injector import Injector, Module, singleton
 
 
@@ -16,8 +16,8 @@ class AppModule(Module):
         )
         binder.bind(DbSettings, to=db_config)
         binder.bind(DbContext)
-        binder.bind(DataSourceService)
-        binder.bind(ItemService)
+        binder.bind(DataSourceRepository)
+        binder.bind(ItemRepository)
 
 def configure_injector() -> Injector:
     injector = Injector(modules=[AppModule()])

@@ -1,12 +1,15 @@
+from dataclasses import dataclass
+import datetime
 
+
+@dataclass
 class CraftingSlot:
-    instances = []
-    # [Lista com todas as recipies, temporaria até nao termos PostGres]
-
-    def __init__(self, craft_id, item_destino_nome, qtd, item_source_nome):
-        self.craft_id = craft_id
-        self.item_destino_nome = item_destino_nome
-        self.qtd = qtd
-        self.item_source_nome = item_source_nome
-        CraftingSlot.instances.append(self)
+    craft_id            : int
+    destination_item_id : int
+    source_item_id      : int
+    data_source_id      : int
+    updated_at          : datetime
+    updated_by          : str
+    created_at          : datetime
+    created_by          : str
 

@@ -1,14 +1,16 @@
 from typing import List
 
+from injector import inject
+
 from src.core.data_source import DataSource
 from src.dal.posgres.db_context import DbContext
-from injector import Injector
 from psycopg2.extensions import connection
 
 
-class DataSourceService:
+class DataSourceRepository:
     conn: connection
 
+    @inject
     def __init__(self, ctx: DbContext) -> None:
         self.conn = ctx.conn
 
