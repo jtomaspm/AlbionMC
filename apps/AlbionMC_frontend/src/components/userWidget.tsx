@@ -34,7 +34,7 @@ const UserComponent = function () {
                         </a>
                     </li>
                     <li><a>Settings</a></li>
-                    <li><a>Logout</a></li>
+                    <li><a onClick={logout}>Logout</a></li>
                 </ul>
             </div>
         </>
