@@ -2,22 +2,38 @@ import { useAuth } from "./authProvider";
 
 
 const LoginButton = function () {
-    const { user, login, logout } = useAuth();
+    const { user, login, logout, loading } = useAuth();
 
     function loginGithub(e: MouseEvent) {
-        login()
+        if(!user()) login();
     }
 
     return (
         <>
-            <a onClick={(e) => loginGithub(e)} class="btn">Github Login</a>
+            <a onClick={(e) => loginGithub(e)} class="btn" style={{ position: 'relative' }}>
+                {loading() || user() != null ? (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: '20px',
+                            height: '20px',
+                            border: '2px solid #ffffff',
+                            "border-top-color": 'transparent',
+                            "border-radius": '50%',
+                            animation: 'spin 1s linear infinite',
+                        }}
+                    ></div>
+                ) : "Github Login"}
+            </a>
         </>
-    )
-
-}
+    );
+};
 
 const UserComponent = function () {
-    const { user, login, logout } = useAuth();
+    const { user, login, logout, loading } = useAuth();
     return (
         <>
             <div class="dropdown dropdown-end">
@@ -42,7 +58,7 @@ const UserComponent = function () {
 }
 
 export const UserWidget = function () {
-    const { user, login, logout } = useAuth();
+    const { user, login, logout, loading } = useAuth();
     return (
         <>
             {user() ? <UserComponent /> : <LoginButton />}

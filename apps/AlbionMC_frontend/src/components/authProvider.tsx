@@ -6,6 +6,7 @@ interface AuthContextType {
     user: () => UserType | null;
     login: () => void;
     logout: () => void;
+    loading: () => boolean;
 }
 
 
@@ -21,8 +22,10 @@ export const useAuth = function (): AuthContextType {
 
 export function AuthProvider(props: any) {
     const [user, setUser] = createSignal<UserType | null>(null);
+    const [loading, setLoading] = createSignal<boolean>(true);
 
     function handleGithubCode() {
+        setLoading(true);
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         if (code) {
@@ -58,24 +61,30 @@ export function AuthProvider(props: any) {
                     console.error('Error:', error);
                 });
         }
+        setLoading(false);
     }
 
+    
+
     createEffect(() => {
-        handleGithubCode();
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             setUser(JSON.parse(storedUser))
+            return
         }
+        handleGithubCode();
     });
 
     const login = () => {
+        setLoading(true);
         window.location.href = API_URL("users/github/login")
     };
 
     const logout = () => {
         setUser(null);
         localStorage.removeItem('user');
+        setLoading(false);
     };
 
-    return <AuthContext.Provider value={{ user, login, logout }}>{props.children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ user, login, logout, loading }}>{props.children}</AuthContext.Provider>;
 }

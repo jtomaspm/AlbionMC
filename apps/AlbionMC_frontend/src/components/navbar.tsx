@@ -20,7 +20,7 @@ const NavLinks = function () {
 
 const NavBar = function () {
     return (
-        <div class="navbar bg-base-100">
+        <div class="navbar bg-base-100 fixed top-0 w-full z-10">
             <div class="navbar-start">
                 <div class="dropdown">
                     <div tabIndex={0} role="button" class="btn btn-ghost lg:hidden">
