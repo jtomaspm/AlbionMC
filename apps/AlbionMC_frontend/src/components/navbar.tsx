@@ -1,24 +1,64 @@
+import { Component } from "solid-js";
 import { UserWidget } from "./userWidget";
 
-const NavLinks = function () {
+const NavLinks : Component<NavBarProps> = function (props) {
+
+    const handleScreenChange = (screenName: string) => {
+        props.onSelectScreen(screenName);
+    };
+
     return (
         <>
-            <li><a>Item 1</a></li>
             <li>
                 <details>
-                    <summary>Parent</summary>
+                    <summary>Items</summary>
                     <ul class="p-2">
-                        <li><a>Submenu 1</a></li>
-                        <li><a>Submenu 2</a></li>
+                        <li><a onClick={() => handleScreenChange("items/all")}>All</a></li>
+                        <li><a onClick={() => handleScreenChange("items/create")}>Create</a></li>
                     </ul>
                 </details>
             </li>
-            <li><a>Item 3</a></li>
+            <li>
+                <details>
+                    <summary>Crafting</summary>
+                    <ul class="p-2">
+                        <li><a onClick={() => handleScreenChange("crafting/all")}>All</a></li>
+                        <li><a onClick={() => handleScreenChange("crafting/create")}>Create</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>Prices</summary>
+                    <ul class="p-2">
+                        <li><a onClick={() => handleScreenChange("prices/all")}>All</a></li>
+                        <li><a onClick={() => handleScreenChange("prices/create")}>Create</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>Sources</summary>
+                    <ul class="p-2">
+                        <li><a onClick={() => handleScreenChange("sources/all")}>All</a></li>
+                        <li><a onClick={() => handleScreenChange("sources/create")}>Create</a></li>
+                    </ul>
+                </details>
+            </li>
         </>
     )
 }
 
-const NavBar = function () {
+interface NavBarProps {
+  onSelectScreen: (screenName: string) => void;
+}
+
+const NavBar : Component<NavBarProps> = function (props) {
+
+    const handleScreenChange = (screenName: string) => {
+        props.onSelectScreen(screenName);
+    };
+
     return (
         <div class="navbar bg-base-100 fixed top-0 w-full z-10">
             <div class="navbar-start">
@@ -27,18 +67,18 @@ const NavBar = function () {
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                     </div>
                     <ul tabIndex={0} class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                        <NavLinks />
+                        <NavLinks onSelectScreen={handleScreenChange} />
                     </ul>
                 </div>
-                <a class="btn btn-ghost text-xl">AlbionMC</a>
+                <a onClick={() => handleScreenChange("welcome")} class="btn btn-ghost text-xl">AlbionMC</a>
             </div>
             <div class="navbar-center hidden lg:flex">
                 <ul class="menu menu-horizontal px-1">
-                    <NavLinks />
+                    <NavLinks onSelectScreen={handleScreenChange} />
                 </ul>
             </div>
             <div class="navbar-end">
-                <UserWidget />
+                <UserWidget onSelectScreen={handleScreenChange} />
             </div>
         </div>
     )

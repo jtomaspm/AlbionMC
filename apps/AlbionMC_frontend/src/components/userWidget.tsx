@@ -1,3 +1,4 @@
+import { Component } from "solid-js";
 import { useAuth } from "./authProvider";
 
 
@@ -32,8 +33,12 @@ const LoginButton = function () {
     );
 };
 
-const UserComponent = function () {
+const UserComponent : Component<WidgetProps> = function (props) {
     const { user, login, logout, loading } = useAuth();
+    const handleScreenChange = (screenName: string) => {
+        props.onSelectScreen(screenName);
+    };
+
     return (
         <>
             <div class="dropdown dropdown-end">
@@ -44,12 +49,12 @@ const UserComponent = function () {
                 </div>
                 <ul tabIndex={0} class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                     <li>
-                        <a class="justify-between">
+                        <a onClick={() => handleScreenChange("profile")} class="justify-between">
                             Profile
                             <span class="badge">New</span>
                         </a>
                     </li>
-                    <li><a>Settings</a></li>
+                    <li><a onClick={() => handleScreenChange("settings")}>Settings</a></li>
                     <li><a onClick={logout}>Logout</a></li>
                 </ul>
             </div>
@@ -57,11 +62,20 @@ const UserComponent = function () {
     )
 }
 
-export const UserWidget = function () {
+interface WidgetProps {
+  onSelectScreen: (screenName: string) => void;
+}
+
+export const UserWidget : Component<WidgetProps> = function (props) {
     const { user, login, logout, loading } = useAuth();
+
+    const handleScreenChange = (screenName: string) => {
+        props.onSelectScreen(screenName);
+    };
+
     return (
         <>
-            {user() ? <UserComponent /> : <LoginButton />}
+            {user() ? <UserComponent onSelectScreen={handleScreenChange} /> : <LoginButton />}
         </>
     )
 }

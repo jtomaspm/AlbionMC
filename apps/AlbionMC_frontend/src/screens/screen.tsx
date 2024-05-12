@@ -1,4 +1,5 @@
 import { Component, JSX } from "solid-js";
+import { useAuth } from "../components/authProvider";
 
 interface ScreenProps {
   children?: JSX.Element;
@@ -6,9 +7,13 @@ interface ScreenProps {
 
 
 export const Screen: Component<ScreenProps> = props => {
+  const { user, login, logout, loading } = useAuth();
   return (
     <div class="min-h-screen flex flex-col justify-center items-center">
-      {props.children}
+        {
+            user() == null ? <div>Please Login!</div> : 
+            props.children 
+        }
     </div>
   );
 }

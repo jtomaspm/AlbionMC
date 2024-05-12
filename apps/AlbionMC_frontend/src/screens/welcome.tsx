@@ -1,6 +1,3 @@
-import { createSignal } from "solid-js";
-import {A} from "@solidjs/router";
-
 const Welcome = function(){
     return (
         <div>
