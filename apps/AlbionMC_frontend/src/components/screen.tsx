@@ -1,5 +1,5 @@
 import { Component, JSX } from "solid-js";
-import { useAuth } from "../components/authProvider";
+import { useAuth } from "./authProvider";
 
 interface ScreenProps {
   children?: JSX.Element;

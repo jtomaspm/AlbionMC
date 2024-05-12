@@ -2,7 +2,7 @@ import { Component, JSX, createSignal } from 'solid-js';
 import NavBar from './components/navbar';
 import Footer from './components/footer';
 import { AuthProvider } from './components/authProvider';
-import { Screen } from './screens/screen';
+import { Screen } from './components/screen';
 import Welcome from './screens/welcome';
 import { AllItems } from './screens/items/all';
 import { CreateItems } from './screens/items/create';
