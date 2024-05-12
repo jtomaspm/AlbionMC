@@ -1,5 +1,9 @@
 import datetime
-from typing import List
+from typing import Dict, List
+
+from fastapi import HTTPException
+from src.core.entities.item import Item
+from src.repository.item_repository import ItemRepository
 from src.core.entities.item_price import ItemPrice
 from src.dal.posgres.db_context import DbContext
 from injector import inject
@@ -7,10 +11,12 @@ from psycopg2.extensions import connection
 
 class ItemPriceRepository:
     conn: connection
+    item_repo: ItemRepository
 
     @inject
-    def __init__(self, ctx: DbContext) -> None:
+    def __init__(self, ctx: DbContext, item_repo: ItemRepository) -> None:
         self.conn = ctx.conn
+        self.item_repo = item_repo
 
     def new(self, record: ItemPrice, user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:
@@ -64,3 +70,34 @@ class ItemPriceRepository:
             query = "DELETE FROM item_prices WHERE item_id = %s AND created_at = %s"
             cur.execute(query, (item_id, created_at))
             self.conn.commit()
+
+    def new_from_item(self, item: Item, record: ItemPrice, user_name: str) -> None:
+        if(item.id):
+            pass
+        elif(item.unique_name != ""):
+            item = self.item_repo.get_by_unique_name(item.unique_name)
+        elif(item.name != ""):
+            item = self.item_repo.get_by_name(item.name)
+        else:
+            raise HTTPException(status_code=404, detail={"error":"Item not found..."})
+        if item == None:
+            raise HTTPException(status_code=404, detail={"error":"Item not found..."})
+        record.item_id = item.id
+        self.new(record=record,user_name=user_name)
+        
+    def new_batch_from_items(self, data: Dict[Item, ItemPrice], user_name: str) -> None:
+        for item, record in data:
+            if(item.id):
+                pass
+            elif(item.unique_name != ""):
+                item = self.item_repo.get_by_unique_name(item.unique_name)
+            elif(item.name != ""):
+                item = self.item_repo.get_by_name(item.name)
+            else:
+                raise HTTPException(status_code=404, detail={"error":"Item not found..."})
+            if item == None:
+                raise HTTPException(status_code=404, detail={"error":"Item not found..."})
+            record.item_id = item.id
+        self.new_batch(records=list(data.values()), user_name=user_name)
+        
+

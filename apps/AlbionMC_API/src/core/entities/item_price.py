@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 
 class ItemPrice(BaseModel):
-    item_id         : int
+    item_id         : Optional[int] = None
     price           : int
     city            : str
     data_source_id  : int

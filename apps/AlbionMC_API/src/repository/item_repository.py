@@ -82,3 +82,49 @@ class ItemRepository:
             query = "DELETE FROM items WHERE id = %s"
             cur.execute(query, (record_id,))
             self.conn.commit()
+
+    def get_by_unique_name(self, unique_name: str) -> Item | None:
+        with self.conn.cursor() as cur:
+            query = "SELECT id, unique_name, english_name, tags, tier, enchant, item_description, data_source_id, updated_at, updated_by, created_at, created_by  FROM items WHERE unique_name = %s"
+            cur.execute(query, (unique_name,))
+            row = cur.fetchone()
+            if row:
+                return Item(**{
+                    "id" : row[0],
+                    "unique_name" : row[1],
+                    "name" : row[2],
+                    "tags" : row[3],
+                    "tier" : row[4],
+                    "enchant" : row[5],
+                    "description" : row[6],
+                    "data_source_id" : row[7],
+                    "updated_at" : row[8],
+                    "updated_by" : row[9],
+                    "created_at" : row[10],
+                    "created_by" : row[11],
+                })
+            else:
+                return None
+
+    def get_by_name(self, name: str) -> Item | None:
+        with self.conn.cursor() as cur:
+            query = "SELECT id, unique_name, english_name, tags, tier, enchant, item_description, data_source_id, updated_at, updated_by, created_at, created_by  FROM items WHERE name = %s"
+            cur.execute(query, (name,))
+            row = cur.fetchone()
+            if row:
+                return Item(**{
+                    "id" : row[0],
+                    "unique_name" : row[1],
+                    "name" : row[2],
+                    "tags" : row[3],
+                    "tier" : row[4],
+                    "enchant" : row[5],
+                    "description" : row[6],
+                    "data_source_id" : row[7],
+                    "updated_at" : row[8],
+                    "updated_by" : row[9],
+                    "created_at" : row[10],
+                    "created_by" : row[11],
+                })
+            else:
+                return None
