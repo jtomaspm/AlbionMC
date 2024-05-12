@@ -14,6 +14,7 @@ import { AllSources } from './screens/sources/all';
 import { CreateSources } from './screens/sources/create';
 import Profile from './screens/profile';
 import Settings from './screens/settings';
+import Error from './screens/error';
 
 const App: Component = () => {
   const [selectedScreen, setSelectedScreen] = createSignal<string>('welcome');
@@ -23,17 +24,17 @@ const App: Component = () => {
   };
 
   const screens: { [key: string]: JSX.Element } = {
-    'welcome'          : <Welcome />,
-    'profile'          : <Profile />,
-    'settings'         : <Settings />,
-    'items/all'        : <AllItems />,
-    'items/create'     : <CreateItems />,
-    'crafting/all'     : <AllCrafting />,
-    'crafting/create'  : <CreateCrafting />,
-    'prices/all'       : <AllPrices />,
-    'prices/create'    : <CreatePrices />,
-    'sources/all'      : <AllSources />,
-    'sources/create'   : <CreateSources />,
+    'welcome': <Welcome />,
+    'profile': <Profile />,
+    'settings': <Settings />,
+    'items/all': <AllItems />,
+    'items/create': <CreateItems />,
+    'crafting/all': <AllCrafting />,
+    'crafting/create': <CreateCrafting />,
+    'prices/all': <AllPrices />,
+    'prices/create': <CreatePrices />,
+    'sources/all': <AllSources />,
+    'sources/create': <CreateSources />,
   };
 
   return (
@@ -42,8 +43,8 @@ const App: Component = () => {
         <NavBar onSelectScreen={handleScreenChange} />
         <Screen>
           {
-            screens[selectedScreen()] ?? 
-            <div>Error...</div>
+            screens[selectedScreen()] ??
+            <Error />
           }
         </Screen>
         <Footer />

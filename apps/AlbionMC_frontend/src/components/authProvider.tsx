@@ -54,7 +54,7 @@ export function AuthProvider(props: any) {
                         .then(info_json => {
                             u.data = info_json
                             setUser(u as UserType)
-                            localStorage.setItem("user", JSON.stringify(user()))
+                            localStorage.setItem("albionmc_user", JSON.stringify(user()))
                         })
                 })
                 .catch(error => {
@@ -64,10 +64,8 @@ export function AuthProvider(props: any) {
         setLoading(false);
     }
 
-    
-
     createEffect(() => {
-        const storedUser = localStorage.getItem("user");
+        const storedUser = localStorage.getItem("albionmc_user");
         if (storedUser) {
             setUser(JSON.parse(storedUser))
             return
@@ -82,7 +80,7 @@ export function AuthProvider(props: any) {
 
     const logout = () => {
         setUser(null);
-        localStorage.removeItem('user');
+        localStorage.removeItem('albionmc_user');
         setLoading(false);
     };
 
