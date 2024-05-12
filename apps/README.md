@@ -10,7 +10,8 @@ POSTGRES_PASSWORD=Albionmc123?
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432      
 
-API_PORT=3000
+GITHUB_CLIENT_ID=xxxxxxxxxxxxxxxxxx
+GITHUB_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## Run
