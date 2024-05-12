@@ -26,10 +26,8 @@ class GithubAuthService:
             'client_secret' : self.app_settings.github_client_secret,
             'code'          : code
         }
-        print(params)
         headers = {'Accept': 'application/json'}
         response = requests.post(url='https://github.com/login/oauth/access_token', params=params, headers=headers).json()
-        print(response)
         return response
 
     def get_user_info(self, token: str) -> Optional[Dict[str, Any]]:

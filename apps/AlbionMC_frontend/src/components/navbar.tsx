@@ -37,7 +37,9 @@ const NavBar = function () {
                     <NavLinks />
                 </ul>
             </div>
-            <UserWidget />
+            <div class="navbar-end">
+                <UserWidget />
+            </div>
         </div>
     )
 }

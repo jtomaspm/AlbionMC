@@ -24,9 +24,12 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         if not any(request.url.path.startswith(route) for route in self.excluded_routes):
-            auth_service: GithubAuthService = injector.get(GithubAuthService)
-            token = await oauth2_scheme(request)
-            request.state.user = auth_service.get_user_info(token)
-            if not request.state.user:    
-                return Response("Not authenticated", status_code=401)
+            try:
+                auth_service: GithubAuthService = injector.get(GithubAuthService)
+                token = await oauth2_scheme(request)
+                request.state.user = auth_service.get_user_info(token)
+                if not request.state.user:    
+                    return Response("Not authenticated", status_code=401)
+            except Exception as e:
+                return Response(f'{e}', status_code=401)
         return await call_next(request)
