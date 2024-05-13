@@ -1,5 +1,8 @@
 from dotenv import load_dotenv
 
+from src.dal.posgres.db_context import DbContext
+from src.dal.posgres.migrations.migrations import run_migrations
+from src.dependencies import configure_injector
 from src.middleware.setup import setup_middleware
 load_dotenv()
 
@@ -8,6 +11,9 @@ from fastapi import FastAPI
 import uvicorn
 
 from src.router.api_router import setup_routes
+
+injector = configure_injector()
+run_migrations(injector.get(DbContext).conn)
 
 description = """
 AlbionMC API helps you manage the AlbionMC Database. 🚀
