@@ -38,8 +38,10 @@ class GithubAuthService:
             'Accept'        : 'application/json',
             'Authorization' : f'Bearer {token}'
             }
-        response = requests.get(url='https://api.github.com/user', headers=headers).json()
-        if 'error' in response:
+        response = requests.get(url='https://api.github.com/user', headers=headers)
+        print(response.status_code)
+        if response.status_code > 299:
             return None
-        self.cache_service.put(token, response)
-        return response
+        res_json = response.json()
+        self.cache_service.put(token, res_json)
+        return res_json

@@ -10,7 +10,7 @@ from src.dependencies import configure_injector
 injector = configure_injector()
 
 @data_source_router.get("/")
-def get_data_sources(data_source_repo: DataSourceRepository = Depends(lambda: injector.get(DataSourceRepository))) -> List[DataSource]:
+async def get_data_sources(data_source_repo: DataSourceRepository = Depends(lambda: injector.get(DataSourceRepository))) -> List[DataSource]:
     return data_source_repo.get_all()
 
 @data_source_router.get("/{data_source_id}")
