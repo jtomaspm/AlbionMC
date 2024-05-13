@@ -19,5 +19,5 @@ def get_item_price(user_id: int, user_preference_repo: UserPreferencesRepository
 
 @user_preference_router.post("/")
 def create_item_price(request: Request, user_preference: UserPreference, user_preference_repo: UserPreferencesRepository = Depends(lambda: injector.get(UserPreferencesRepository))):
-    user_preference_repo.new(user_preference, request.state.user['login'])
+    user_preference_repo.set(user_preference, request.state.user['login'])
     return {"message": "User preference created successfully"}

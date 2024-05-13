@@ -1,4 +1,5 @@
 from datetime import timedelta
+import json
 from typing import Dict, List
 from injector import inject
 from pyignite import Client
@@ -14,8 +15,12 @@ class CacheService:
         self.client = client
         self.cache = client.get_or_create_cache('users').with_expire_policy(expiry_policy=ExpiryPolicy(create=600000))
 
-    def put(self, key:str, val: Dict | List | str):
-        self.cache.put(key, val)
+    def put(self, key:str, val: dict):
+        json_val = json.dumps(val) 
+        self.cache.put(key, json_val)
 
-    def get(self, key:str) -> Dict | List | str | None:
-        return self.cache.get(key)
+    def get(self, key:str) -> dict | None:
+        json_val = self.cache.get(key)
+        if json_val is not None:
+            return json.loads(json_val)
+        return None

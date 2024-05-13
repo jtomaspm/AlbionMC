@@ -1,9 +1,9 @@
 import { createContext, createEffect, createSignal, useContext } from "solid-js";
-import { API_URL } from "../service/api";
-import { UserType } from "../types/user";
+import { API_REQUEST, API_URL } from "../service/api";
+import { UserContextType, UserPreferencesType, UserType } from "../types/user";
 
 interface AuthContextType {
-    user: () => UserType | null;
+    user: () => UserContextType | null;
     login: () => void;
     logout: () => void;
     loading: () => boolean;
@@ -21,7 +21,7 @@ export const useAuth = function (): AuthContextType {
 
 
 export function AuthProvider(props: any) {
-    const [user, setUser] = createSignal<UserType | null>(null);
+    const [user, setUser] = createSignal<UserContextType | null>(null);
     const [loading, setLoading] = createSignal<boolean>(true);
 
     function handleGithubCode() {
@@ -40,9 +40,10 @@ export function AuthProvider(props: any) {
                 })
                 .then(data => {
                     if (!data.access_token) return
-                    let u = {
+                    let u: UserContextType = {
                         token: data.access_token,
-                        data: {},
+                        data: {} as UserType,
+                        preferences: {} as UserPreferencesType
                     }
                     fetch(API_URL("users/github/info?token=" + u.token), {
                         method: 'GET',
@@ -53,8 +54,18 @@ export function AuthProvider(props: any) {
                         .then(info_res => info_res.json())
                         .then(info_json => {
                             u.data = info_json
-                            setUser(u as UserType)
-                            localStorage.setItem("albionmc_user", JSON.stringify(user()))
+                            API_REQUEST("user_preferences/"+u.data.id,'GET',{},null,u.token)
+                                .then(res=>res.status < 300 ? res.json() : null)
+                                .then(res=>{
+                                    if(res != null){
+                                        u.preferences = res
+                                    }
+                                })
+                                .catch(e=>{console.log('Error:', e)})
+                                .finally(()=>{
+                                    setUser(u)
+                                    localStorage.setItem('albionmc_user', JSON.stringify(u))
+                                })
                         })
                 })
                 .catch(error => {
