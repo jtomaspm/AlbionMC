@@ -1,4 +1,5 @@
 import os
+from src.repository.user_preferences_repository import UserPreferencesRepository
 from src.service.cache_service import CacheService
 from src.service.auth_service import GithubAuthService
 from src.core.settings.app_settings import AppSettings
@@ -39,6 +40,7 @@ class AppModule(Module):
         binder.bind(CraftingSlotRepository)
         binder.bind(ItemPriceRepository)
         binder.bind(GithubAuthService)
+        binder.bind(UserPreferencesRepository)
         ###########################
 
 def configure_injector() -> Injector:
