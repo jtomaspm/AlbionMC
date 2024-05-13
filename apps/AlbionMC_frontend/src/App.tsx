@@ -18,6 +18,7 @@ import Error from './screens/error';
 
 const App: Component = () => {
   const [selectedScreen, setSelectedScreen] = createSignal<string>('welcome');
+  const [theme, setTheme] = createSignal<string>('dark');
 
   const handleScreenChange = (screenName: string) => {
     setSelectedScreen(screenName);
@@ -37,10 +38,40 @@ const App: Component = () => {
     'sources/create': <CreateSources />,
   };
 
+  const themes: string[] = [
+    "light",
+    "dark",
+    "cupcake",
+    "bumblebee",
+    "emerald",
+    "synthwave",
+    "retro",
+    "cyberpunk",
+    "valentine",
+    "halloween",
+    "garden",
+    "forest",
+    "aqua",
+    "lofi",
+    "pastel",
+    "fantasy",
+    "wireframe",
+    "black",
+    "luxury",
+    "dracula",
+    "autumn",
+    "night",
+    "coffee",
+    "winter",
+    "dim",
+    "nord",
+    "sunset",
+  ]
+
   return (
-    <>
+    <div data-theme={theme()}>
       <AuthProvider>
-        <NavBar onSelectScreen={handleScreenChange} />
+        <NavBar onSelectScreen={handleScreenChange} setTheme={setTheme} themes={themes} theme={theme} />
         <Screen>
           {
             screens[selectedScreen()] ??
@@ -49,7 +80,7 @@ const App: Component = () => {
         </Screen>
         <Footer />
       </AuthProvider>
-    </>
+    </div>
   );
 }
 

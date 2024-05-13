@@ -6,7 +6,7 @@ const LoginButton = function () {
     const { user, login, logout, loading } = useAuth();
 
     function loginGithub(e: MouseEvent) {
-        if(!user()) login();
+        if (!user()) login();
     }
 
     return (
@@ -33,7 +33,7 @@ const LoginButton = function () {
     );
 };
 
-const UserComponent : Component<WidgetProps> = function (props) {
+const UserComponent: Component<UserProps> = function (props) {
     const { user, login, logout, loading } = useAuth();
     const handleScreenChange = (screenName: string) => {
         props.onSelectScreen(screenName);
@@ -62,11 +62,18 @@ const UserComponent : Component<WidgetProps> = function (props) {
     )
 }
 
-interface WidgetProps {
-  onSelectScreen: (screenName: string) => void;
+interface UserProps {
+    onSelectScreen: (screenName: string) => void;
 }
 
-export const UserWidget : Component<WidgetProps> = function (props) {
+interface WidgetProps {
+    onSelectScreen: (screenName: string) => void;
+    setTheme: (theme: string) => void;
+    themes: string[];
+    theme: () => string;
+}
+
+export const UserWidget: Component<WidgetProps> = function (props) {
     const { user, login, logout, loading } = useAuth();
 
     const handleScreenChange = (screenName: string) => {
@@ -75,6 +82,19 @@ export const UserWidget : Component<WidgetProps> = function (props) {
 
     return (
         <>
+            <div class="dropdown">
+                <div tabIndex={0} role="button" class="btn">
+                    Theme
+                    <svg width="12px" height="12px" class="h-2 w-2 fill-current opacity-60 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048"><path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path></svg>
+                </div>
+                <ul onChange={e => {props.setTheme(e.target.nodeValue as string)}} tabIndex={0} class="dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-52">
+                    {
+                        props.themes.map(item =>
+                            <li><input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label={item} value={item} /></li>
+                        )
+                    }
+                </ul>
+            </div>
             {user() ? <UserComponent onSelectScreen={handleScreenChange} /> : <LoginButton />}
         </>
     )

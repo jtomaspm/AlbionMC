@@ -52,6 +52,9 @@ const NavLinks: Component<NavBarProps> = function (props) {
 
 interface NavBarProps {
     onSelectScreen: (screenName: string) => void;
+    setTheme: (theme: string) => void;
+    themes: string[];
+    theme: () => string;
 }
 
 const NavBar: Component<NavBarProps> = function (props) {
@@ -71,7 +74,7 @@ const NavBar: Component<NavBarProps> = function (props) {
                     {
                         user() != null ?
                             <ul tabIndex={0} class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                                <NavLinks onSelectScreen={handleScreenChange} />
+                                <NavLinks onSelectScreen={props.onSelectScreen} setTheme={props.setTheme} themes={props.themes} theme={props.theme}/>
                             </ul> : <></>
                     }
                 </div>
@@ -81,12 +84,12 @@ const NavBar: Component<NavBarProps> = function (props) {
                 {
                     user() != null ?
                         <ul class="menu menu-horizontal px-1">
-                            <NavLinks onSelectScreen={handleScreenChange} />
+                            <NavLinks onSelectScreen={props.onSelectScreen} setTheme={props.setTheme} themes={props.themes} theme={props.theme}/>
                         </ul> : <></>
                 }
             </div>
             <div class="navbar-end">
-                <UserWidget onSelectScreen={handleScreenChange} />
+                <UserWidget onSelectScreen={props.onSelectScreen} setTheme={props.setTheme} themes={props.themes} theme={props.theme}/>
             </div>
         </div>
     )
