@@ -11,7 +11,7 @@ const Login = function () {
                     <p>Let's make your Albion experience truly magnificent!</p>
                     <br />
                     <div class="card-actions justify-center">
-                        <a href="https://github.com/jtomaspm/AlbionMC" target="_blank" class="btn">Get Started</a>
+                        <a href="https://github.com/jtomaspm/AlbionMC" target="_blank" class="btn btn-info">Get Started</a>
                     </div>
                 </div>
             </div>

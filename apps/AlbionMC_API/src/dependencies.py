@@ -1,4 +1,5 @@
 import os
+from time import sleep
 from src.service.item_service import ItemService
 from src.repository.user_preferences_repository import UserPreferencesRepository
 from src.service.cache_service import CacheService
@@ -27,8 +28,15 @@ class AppModule(Module):
             'github_client_id'      : os.environ.get('GITHUB_CLIENT_ID'),
             'github_client_secret'  : os.environ.get('GITHUB_CLIENT_SECRET'),
         })
-        cache_con = Client()
-        cache_con.connect('ignite', 10800)
+        cache_con = None
+        while cache_con == None:
+            try:
+                cache_con = Client()
+                cache_con.connect('ignite', 10800)
+            except:
+                cache_con=None
+                print('Failed to connect to ignite, trying again in 5 seconds...')
+                sleep(5)
 
         ########## Binds ##########
         binder.bind(DbSettings, to=db_config)

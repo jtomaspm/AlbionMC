@@ -11,7 +11,7 @@ const LoginButton = function () {
 
     return (
         <>
-            <a onClick={(e) => loginGithub(e)} class="btn" style={{ position: 'relative' }}>
+            <a onClick={(e) => loginGithub(e)} class="btn btn-primary btn-sm" style={{ position: 'relative' }}>
                 {loading() || user() != null ? (
                     <div
                         style={{
