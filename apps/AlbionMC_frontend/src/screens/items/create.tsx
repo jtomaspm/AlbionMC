@@ -127,7 +127,7 @@ const FileTab = function (props: {props:()=>FileTabProps, setProps:(props:FileTa
         <div class="card-body flex flex-col justify-between">
             <div>
                 <h2 class="card-title">Create Item</h2>
-                <label class="form-control w-full max-w-xs">
+                <label class="form-control w-full max-w-xs mt-2">
                     <div class="label">
                         <span class="label-text">Pick a file</span>
                     </div>
