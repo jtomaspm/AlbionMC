@@ -39,14 +39,15 @@ const App: Component = () => {
     }
   });
 
+  const screensMap = screens()
 
   return (
     <div data-theme={theme()}>
       <NavBar onSelectScreen={handleScreenChange} setTheme={handleThemeChange} themes={themes} theme={theme} />
       <Screen>
         {
-          screens[selectedScreen()] ??
-          screens["error"]
+          screensMap[selectedScreen()] ??
+          screensMap["error"]
         }
       </Screen>
       <Footer />

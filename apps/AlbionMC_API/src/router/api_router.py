@@ -6,6 +6,7 @@ from src.controller.item_price_controller import item_price_router
 from src.controller.crafting_slot_controller import crafting_slot_router
 from src.controller.user_controller import github_router
 from src.controller.user_preferences_controller import user_preference_router
+from src.controller.item_details_controller import item_detail_router
 
 
 def setup_routes(app: FastAPI, prefix: str):
@@ -15,3 +16,4 @@ def setup_routes(app: FastAPI, prefix: str):
    app.include_router(crafting_slot_router, prefix=prefix)
    app.include_router(github_router, prefix=prefix)
    app.include_router(user_preference_router, prefix=prefix)
+   app.include_router(item_detail_router, prefix=prefix)

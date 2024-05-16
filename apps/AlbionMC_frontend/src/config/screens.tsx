@@ -10,17 +10,21 @@ import Profile from '../screens/profile';
 import Settings from '../screens/settings';
 import { JSX } from 'solid-js';
 import Error from '../screens/error';
+import { useAuth } from '../components/authProvider';
 
-export const screens: { [key: string]: JSX.Element } = {
-    'error':  <Error />,
-    'profile': <Profile />,
-    'settings': <Settings />,
-    'items/all': <AllItems />,
-    'items/create': <CreateItems />,
-    'crafting/all': <AllCrafting />,
-    'crafting/create': <CreateCrafting />,
-    'prices/all': <AllPrices />,
-    'prices/create': <CreatePrices />,
-    'sources/all': <AllSources />,
-    'sources/create': <CreateSources />,
-};
+export const screens: () => { [key: string]: JSX.Element } = function () {
+    const { user, login, logout, loading } = useAuth();
+    return {
+        'error': <Error />,
+        'profile': <Profile />,
+        'settings': <Settings />,
+        'items/all': <AllItems />,
+        'items/create': <CreateItems user={user} />,
+        'crafting/all': <AllCrafting />,
+        'crafting/create': <CreateCrafting />,
+        'prices/all': <AllPrices />,
+        'prices/create': <CreatePrices />,
+        'sources/all': <AllSources />,
+        'sources/create': <CreateSources />,
+    };
+}
