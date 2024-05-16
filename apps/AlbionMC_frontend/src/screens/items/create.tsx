@@ -9,45 +9,44 @@ type ManualTabProps = {
     description: string
 }
 const ManualTab = function (props: {props:()=>ManualTabProps, setProps:(props:ManualTabProps)=>void}): JSX.Element {
-    const [tags, setTags] = createSignal(props.props().tags);
     const setName = (name: string) => {
-        let p = props.props();
-        p.name = name;
-        props.setProps(p);
+        props.setProps({
+            ...props.props(),
+            name : name
+        });
     }
     const setUniqueName = (unique_name: string) => {
-        let p = props.props();
-        p.unique_name = unique_name;
-        props.setProps(p);
+        props.setProps({
+            ...props.props(),
+            unique_name : unique_name
+        });
     }
     const setDescription = (description: string) => {
-        let p = props.props();
-        p.description = description;
-        props.setProps(p);
+        props.setProps({
+            ...props.props(),
+            description : description
+        });
     }
     const setCurrentTag = (tag: string) => {
-        let p = props.props();
-        p.current_tag = tag;
-        props.setProps(p);
+        props.setProps({
+            ...props.props(),
+            current_tag : tag
+        });
     }
     const addTag = () => {
-        let p = props.props();
-        if(p.current_tag != '' && !tags().includes(p.current_tag)){
-            const newTags = [...p.tags, p.current_tag];
-            p.tags = newTags;
-            setTags(newTags);
+        let p = {...props.props()};
+        if(p.current_tag != '' && !p.tags.includes(p.current_tag)){
+            p.tags = [...p.tags, p.current_tag] 
         }
         p.current_tag = '';
         (document.getElementById('current_tag_in') as HTMLInputElement).value = '';
         props.setProps(p);
     }
     const removeTag = (tag: string) => {
-        let p = props.props();
+        let p = {...props.props()};
         const index = p.tags.indexOf(tag);
         if (index > -1) {
-            const newTags = [...p.tags.slice(0, index), ...p.tags.slice(index + 1)];
-            p.tags = newTags;
-            setTags(newTags);
+            p.tags = [...p.tags.slice(0, index), ...p.tags.slice(index + 1)];
         }
         props.setProps(p);
     }
@@ -56,14 +55,13 @@ const ManualTab = function (props: {props:()=>ManualTabProps, setProps:(props:Ma
         (document.getElementById('name_in') as HTMLInputElement).value = '';
         (document.getElementById('unique_name_in') as HTMLInputElement).value = '';
         (document.getElementById('description_in') as HTMLInputElement).value = '';
-        let p = props.props();
+        let p = {...props.props()};
         p.tags = [];
         p.current_tag = ''
         p.description = ''
         p.name = ''
         p.unique_name = ''
         props.setProps(p);
-        setTags([]);
     }
     return (
         <div class="card-body">
@@ -93,7 +91,7 @@ const ManualTab = function (props: {props:()=>ManualTabProps, setProps:(props:Ma
             </div>
             <div id="tags_container" class="card-actions justify-start items-center">
                 {
-                    tags().map(tag=>{
+                    props.props().tags.map(tag=>{
                         return (
                             <>
                                 <button onClick={()=>removeTag(tag)} class="btn btn-outline btn-info">{tag}</button>

@@ -11,7 +11,7 @@ interface ScreenProps {
 export const Screen: Component<ScreenProps> = props => {
   const { user, login, logout, loading } = useAuth();
   return (
-    <div class="min-h-screen pt-72" style={{ "background-image": `url(${Wallpaper})`, "background-size": "cover", "background-position": "center" }}>
+    <div class="min-h-screen pt-56" style={{ "background-image": `url(${Wallpaper})`, "background-size": "cover", "background-position": "center" }}>
       <div class="min-h-screen flex flex-col items-center">
       {
         user() == null ? <Login /> :
