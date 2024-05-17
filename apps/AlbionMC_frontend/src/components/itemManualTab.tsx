@@ -114,7 +114,7 @@ export const ManualTab = function (props: { props: () => ManualTabProps, setProp
                 let a = {
                     ...alerts(),
                 }
-                a[id] = () => NewAlert('sucess','Item created.','alert_'+Object.entries(alerts()).length);
+                a[id] = () => NewAlert('success','Item created.','alert_'+Object.entries(alerts()).length);
                 setAlerts(a);
             } else {
                 (document.getElementById('submit_mo') as HTMLDialogElement).close();

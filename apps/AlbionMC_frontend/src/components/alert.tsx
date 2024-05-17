@@ -5,7 +5,7 @@ export type AlertsContext = {
     [id:string]:()=>JSX.Element
 }
 
-export function NewAlert(type: 'sucess' | 'error' | 'info', text: string, id: string) : JSX.Element {
+export function NewAlert(type: 'success' | 'error' | 'info', text: string, id: string) : JSX.Element {
     const handleDelete = () => {
         const element = document.getElementById(id);
         if (element) {
