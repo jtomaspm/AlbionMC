@@ -1,6 +1,7 @@
 import { JSX, createSignal } from "solid-js"
 import { API_REQUEST } from "../service/api"
 import { UserContextType } from "../types/user"
+import { Alerts, AlertsContext, NewAlert } from "./alert"
 
 export type ManualTabProps = {
     name: string
@@ -8,10 +9,11 @@ export type ManualTabProps = {
     current_tag: string
     tags: string[]
     description: string
-    user: ()=>UserContextType | null
+    user: () => UserContextType | null
 }
 export const ManualTab = function (props: { props: () => ManualTabProps, setProps: (props: ManualTabProps) => void }): JSX.Element {
     const [itemTier, setItemTier] = createSignal("")
+    const [alerts, setAlerts] = createSignal<AlertsContext>({})
     const setName = (name: string) => {
         props.setProps({
             ...props.props(),
@@ -69,28 +71,28 @@ export const ManualTab = function (props: { props: () => ManualTabProps, setProp
     const setTier = () => {
         let res = '';
         if (props.props().unique_name[0] === 'T' && !isNaN(parseInt(props.props().unique_name[1], 10))) {
-            res += props.props().unique_name[1]   
+            res += props.props().unique_name[1]
         }
         if (props.props().unique_name.slice(-2, -1) === '@' && !isNaN(parseInt(props.props().unique_name.slice(-1), 10))) {
-            res += `.${props.props().unique_name.slice(-1)}`   
+            res += `.${props.props().unique_name.slice(-1)}`
         }
         setItemTier(res);
     }
-    const validateInputs : () => boolean = () => {
+    const validateInputs: () => boolean = () => {
         const p = props.props();
         const valid = 'input input-bordered w-full max-w-xs';
         const invalid = 'input input-bordered input-error w-full max-w-xs';
         let res = true
-        if(p.name === ''){
+        if (p.name === '') {
             (document.getElementById("name_in") as HTMLInputElement).className = invalid;
             res = false;
-        }else{
+        } else {
             (document.getElementById("name_in") as HTMLInputElement).className = valid;
         }
-        if(p.unique_name === ''){
+        if (p.unique_name === '') {
             (document.getElementById("unique_name_in") as HTMLInputElement).className = invalid;
             res = false;
-        }else{
+        } else {
             (document.getElementById("unique_name_in") as HTMLInputElement).className = valid;
         }
         return res;
@@ -104,17 +106,33 @@ export const ManualTab = function (props: { props: () => ManualTabProps, setProp
             description: p.description,
             data_source: 'Manual',
             prices: []
-        }), p.user()?.token).then((res)=>{
-            if(res.status < 300) {
+        }), p.user()?.token).then((res) => {
+            if (res.status < 300) {
                 reset();
                 (document.getElementById('submit_mo') as HTMLDialogElement).close();
-            }else{
+                const id = 'alert_'+Object.entries(alerts()).length
+                let a = {
+                    ...alerts(),
+                }
+                a[id] = () => NewAlert('sucess','Item created.','alert_'+Object.entries(alerts()).length);
+                setAlerts(a);
+            } else {
                 (document.getElementById('submit_mo') as HTMLDialogElement).close();
-                alert(res.body);
+                const id = 'alert_'+Object.entries(alerts()).length
+                let a = {
+                    ...alerts(),
+                }
+                a[id] = () => NewAlert('error','Error.','alert_'+Object.entries(alerts()).length);
+                setAlerts(a);
             }
-        }).catch((e)=>{
+        }).catch((e) => {
             (document.getElementById('submit_mo') as HTMLDialogElement).close();
-            alert(e);
+            const id = 'alert_'+Object.entries(alerts()).length
+            let a = {
+                ...alerts(),
+            }
+            a[id] = () => NewAlert('error','Error.','alert_'+Object.entries(alerts()).length);
+            setAlerts(a);
         });
     }
     return (
@@ -164,7 +182,7 @@ export const ManualTab = function (props: { props: () => ManualTabProps, setProp
             </label>
             <div class="card-actions justify-center mt-4">
                 <button onClick={() => reset()} class="btn btn-outline btn-secondary">Reset</button>
-                <button onClick={()=>{
+                <button onClick={() => {
                     if (!validateInputs()) return;
                     setTier();
                     (document.getElementById('submit_mo') as HTMLDialogElement).showModal();
@@ -179,13 +197,14 @@ export const ManualTab = function (props: { props: () => ManualTabProps, setProp
                     <p class=""><b>Tags: </b>{props.props().tags.join(', ')}</p>
                     <p class=""><b>Description: </b>{props.props().description}</p>
                     <div class="modal-action justify-center">
-                        <button onClick={()=>
+                        <button onClick={() =>
                             (document.getElementById('submit_mo') as HTMLDialogElement).close()
                         } class="btn btn-secondary">Cancel</button>
-                        <button onClick={()=>submit()} class="btn btn-primary">Submit</button>
+                        <button onClick={() => submit()} class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </dialog>
+            <Alerts ctx={alerts} />
         </div>
     )
 }
