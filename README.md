@@ -21,7 +21,7 @@ git clone https://github.com/jtomaspm/AlbionMC albionmc
 cd albionmc
 ```
 
-4. **Using Ninja**: 
+4. **Using Ninja**:  
 Build:
 ```
 cmake -S . -B build -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
