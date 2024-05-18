@@ -8,36 +8,53 @@ AlbionMC is a handy tool for Albion Online players who want to calculate craftin
 # Installation  
 Follow these steps to set up and install AlbionMC on your system:
 
-1. **Python**: Make sure you have Python installed on your system. You can download it from python.org.  
+1. **Docker**: Make sure you have Docker installed on your system.
 
 2. **Clone the Repository**: Use Git to clone this repository to your computer:  
-    ```
-    git clone https://github.com/jtomaspm/AlbionMC albionmc
-    ```
+```
+git clone https://github.com/jtomaspm/AlbionMC albionmc
+```
 
 3. **Navigate to the Directory**: Open a terminal and navigate to the project directory:
 
-    ```
-    cd albionmc
-    ```
-
-4. **Install Dependencies**: Use pip to install the project dependencies:
-
-    ```
-    pip install -r requirements.txt
-    ```
-
-# Usage
 ```
-uvicorn src.main:app --reload
+cd albionmc
 ```
 
-# Testing
-
-In order to have a test database deployed run the script:
-
+4. **Using Ninja**: 
+Build:
 ```
-python ./src/test/db/launch_db.py
+cmake -S . -B build -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
+```
+Run:
+```
+ninja -C build run
+```
+Dev:
+```
+ninja -C build dev
+```
+Stop:
+```
+ninja -C build kill
+```
+Clear:
+```
+ninja -C build clear
+```
+
+5. **Using Docker-Compose**: 
+Open a terminal and navigate to the apps directory:
+```
+cd apps
+```
+Run:
+```
+docker-compose up -d
+```
+Dev:
+```
+docker-compose up -d --build api frontend
 ```
 
 # Contribution
