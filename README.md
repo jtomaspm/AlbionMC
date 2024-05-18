@@ -22,6 +22,7 @@ cd albionmc
 ```
 
 4. **Using Ninja**:  
+
 Build:
 ```
 cmake -S . -B build -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
@@ -44,6 +45,7 @@ ninja -C build clear
 ```
 
 5. **Using Docker-Compose**: 
+
 Open a terminal and navigate to the apps directory:
 ```
 cd apps
