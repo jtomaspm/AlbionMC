@@ -1,7 +1,7 @@
 import { JSX, createSignal } from "solid-js"
-import { API_REQUEST } from "../service/api"
-import { UserContextType } from "../types/user"
-import { Alerts, AlertsContext, NewAlert } from "./alert"
+import { API_REQUEST } from "../../service/api"
+import { UserContextType } from "../../types/user"
+import { Alerts, AlertsContext, NewAlert } from "../alert"
 
 export type ManualTabProps = {
     name: string

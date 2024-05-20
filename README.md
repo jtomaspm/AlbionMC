@@ -1,6 +1,6 @@
 # Albion Market Calculator
 
-AlbionMC is a Python project to calculate crafting costs of items in the game Albion Online.
+AlbionMC is a project to calculate crafting costs of items in the game Albion Online.
 
 # Description
 AlbionMC is a handy tool for Albion Online players who want to calculate crafting costs of items and materials in the game. It analyzes available crafting recipes and determines total costs based on market prices of materials or their individual crafting costs.
