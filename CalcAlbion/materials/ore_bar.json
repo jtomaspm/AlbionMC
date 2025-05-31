@@ -1,0 +1,23 @@
+{
+  "ore": [
+    {
+      "city": "Martlock",
+      "price": 40,
+      "tier": 2,
+      "enchantment": null
+    },
+    {
+      "city": "Martlock",
+      "price": 72,
+      "tier": 3,
+      "enchantment": null
+    },
+    {
+      "city": "Martlock",
+      "price": 76,
+      "tier": 4,
+      "enchantment": null
+    }
+  ]
+}
+

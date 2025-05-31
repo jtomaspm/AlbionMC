@@ -1,0 +1,23 @@
+{
+  "steel_bar": [
+    {
+      "city": "Martlock",
+      "price": 16,
+      "tier": 2,
+      "enchantment": null
+    },
+    {
+      "city": "Martlock",
+      "price": 149,
+      "tier": 3,
+      "enchantment": null
+    },
+    {
+      "city": "Martlock",
+      "price": 242,
+      "tier": 4,
+      "enchantment": 0
+    }
+  ]
+}
+
