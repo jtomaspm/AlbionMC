@@ -13,9 +13,6 @@ class Tree:
         self.children.append(child)
         self.current.add_child(child)
 
-    def next(self) -> Node | None:
-        return self.search_strategy.next()
-
     def __repr__(self):
         return f"Tree(root={self.root}, children={self.children})"
 

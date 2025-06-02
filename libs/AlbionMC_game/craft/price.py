@@ -1,5 +1,8 @@
+from typing import Optional
+
+
 class Price:
-    def __init__(self, buy_order: int | None = None, instant_buy: int | None = None):
+    def __init__(self, buy_order: Optional[int] = None, instant_buy: Optional[int] = None):
         self.buy_order = buy_order
         self.instant_buy = instant_buy
 
