@@ -2,7 +2,7 @@ import os
 import sys
 
 from src.service.file_service import FileService
-from src.core.entities.item import Item, ItemBuilder
+from src.core.entities.item import Item
 from src.dependencies import configure_injector
 from injector import Injector
 
@@ -27,16 +27,6 @@ class ItemLoader:
             )
 
         i = 0
-        ib = ItemBuilder()
-        for line in self.fs.read_file(file_path=file_path):
-            la = [i.strip() for i in line.split(":")]
-            ib.set_item(Item()).set_unique_name(la[1])
-            if len(la)>2:
-                ib.set_name(la[2])
-            item = ib.build()
-            print(item.unique_name)
-            if i == 10:
-                break
 
         self.fs.delete_file(file_path=file_path)
 

@@ -5,14 +5,13 @@ from psycopg2.extensions import connection
 
 class DbContext:
     config: DbSettings
-    conn: connection | None
+    conn: connection
     @inject
     def __init__(self, config: DbSettings) -> None:
         self.config = config
-        self.conn = None
-        self.open()
+        self.conn = self.open()
 
-    def open(self):
+    def open(self) -> connection:
         self.close()
         self.conn = psycopg2.connect(
             dbname      = self.config.dbname, 
@@ -26,4 +25,6 @@ class DbContext:
     def close(self):
         if self.conn:
             self.conn.close()
-        self.conn = None
+
+    def __del__(self):
+        self.close()

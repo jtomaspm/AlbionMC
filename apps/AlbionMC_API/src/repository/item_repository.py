@@ -25,7 +25,7 @@ class ItemRepository:
     def new_batch(self, records:List[Item], user_name: str = "repository"):
         with self.conn.cursor() as cur:
             query = "INSERT INTO items (unique_name, english_name, tags, tier, enchant, item_description, data_source_id, updated_by, created_by) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            cur.executemany(query=query, vars=[[record.unique_name, record.name, record.tags, record.tier, record.enchant, record.description, record.data_source_id, user_name, user_name] for record in records])
+            cur.executemany(query=query, vars_list=[[record.unique_name, record.name, record.tags, record.tier, record.enchant, record.description, record.data_source_id, user_name, user_name] for record in records])
             self.conn.commit()
 
     def get(self, record_id: int) -> Item | None:

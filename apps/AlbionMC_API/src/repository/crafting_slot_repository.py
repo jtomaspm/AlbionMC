@@ -24,7 +24,7 @@ class CraftingSlotRepository:
     def new_batch(self, records: List[CraftingSlot], user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:
             query = "INSERT INTO crafting_slots (craft_id, destination_item_id, source_item_id, source_item_quantity, data_source_id, updated_by, created_by) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            cur.executemany(query=query, vars=[[record.craft_id, record.destination_item_id, record.source_item_id, record.source_item_quantity, record.data_source_id, user_name, user_name] for record in records])
+            cur.executemany(query=query, vars_list=[[record.craft_id, record.destination_item_id, record.source_item_id, record.source_item_quantity, record.data_source_id, user_name, user_name] for record in records])
             self.conn.commit()
 
     def get(self, craft_id: int, destination_item_id: int, source_item_id: int) -> CraftingSlot | None:
