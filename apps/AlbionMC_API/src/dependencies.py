@@ -18,15 +18,15 @@ from pyignite import Client
 class AppModule(Module):
     def configure(self, binder):
         db_config = DbSettings(**{
-            'dbname'    : os.environ.get('POSTGRES_DBNAME'),
-            'user'      : os.environ.get('POSTGRES_USER'),
-            'password'  : os.environ.get('POSTGRES_PASSWORD'),
-            'host'      : os.environ.get('POSTGRES_HOST'),
-            'port'      : os.environ.get('POSTGRES_PORT'),
+            'dbname'    : os.environ.get('POSTGRES_DBNAME') or '',
+            'user'      : os.environ.get('POSTGRES_USER') or '',
+            'password'  : os.environ.get('POSTGRES_PASSWORD') or '',
+            'host'      : os.environ.get('POSTGRES_HOST') or '',
+            'port'      : os.environ.get('POSTGRES_PORT') or '',
         })
         app_config = AppSettings(**{
-            'github_client_id'      : os.environ.get('GITHUB_CLIENT_ID'),
-            'github_client_secret'  : os.environ.get('GITHUB_CLIENT_SECRET'),
+            'github_client_id'      : os.environ.get('GITHUB_CLIENT_ID') or '',
+            'github_client_secret'  : os.environ.get('GITHUB_CLIENT_SECRET') or '',
         })
         cache_con = None
         while cache_con == None:

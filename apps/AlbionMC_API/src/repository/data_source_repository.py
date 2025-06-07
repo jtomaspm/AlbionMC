@@ -33,7 +33,7 @@ class DataSourceRepository:
     def new_batch(self, records: List[DataSource], user_name: str = "repository") -> None:
         with self.conn.cursor() as cur:
             query = "INSERT INTO data_sources (data_source_name, trust_level, updated_by, created_by) VALUES (%s, %s, %s, %s)"
-            cur.executemany(query=query, vars=[[record.name, record.trust_level, user_name, user_name] for record in records])
+            cur.executemany(query=query, vars_list=[[record.name, record.trust_level, user_name, user_name] for record in records])
             self.conn.commit()
 
     def get(self, record_id: int) -> DataSource | None:

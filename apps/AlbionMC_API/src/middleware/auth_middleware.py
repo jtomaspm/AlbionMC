@@ -27,7 +27,8 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
             try:
                 auth_service: GithubAuthService = injector.get(GithubAuthService)
                 token = await oauth2_scheme(request)
-                request.state.user = auth_service.get_user_info(token)
+                if token:
+                    request.state.user = auth_service.get_user_info(token)
                 if not request.state.user:    
                     return Response("Not authenticated", status_code=401)
             except Exception as e:
