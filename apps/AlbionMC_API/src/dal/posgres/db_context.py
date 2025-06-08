@@ -12,7 +12,6 @@ class DbContext:
         self.conn = self.open()
 
     def open(self) -> connection:
-        self.close()
         self.conn = psycopg2.connect(
             dbname      = self.config.dbname, 
             user        = self.config.user, 
@@ -22,9 +21,6 @@ class DbContext:
             )
         return self.conn
 
-    def close(self):
+    def __del__(self):
         if self.conn:
             self.conn.close()
-
-    def __del__(self):
-        self.close()

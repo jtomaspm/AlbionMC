@@ -18,16 +18,18 @@ from pyignite import Client
 class AppModule(Module):
     def configure(self, binder):
         db_config = DbSettings(**{
-            'dbname'    : os.environ.get('POSTGRES_DBNAME') or '',
-            'user'      : os.environ.get('POSTGRES_USER') or '',
-            'password'  : os.environ.get('POSTGRES_PASSWORD') or '',
-            'host'      : os.environ.get('POSTGRES_HOST') or '',
-            'port'      : os.environ.get('POSTGRES_PORT') or '',
+            'dbname'    : os.environ.get('POSTGRES_DBNAME') or 'postgres',
+            'user'      : os.environ.get('POSTGRES_USER') or 'postgres',
+            'password'  : os.environ.get('POSTGRES_PASSWORD') or 'postgres123',
+            'host'      : os.environ.get('POSTGRES_HOST') or '192.168.1.134',
+            'port'      : os.environ.get('POSTGRES_PORT') or '5432',
         })
         app_config = AppSettings(**{
             'github_client_id'      : os.environ.get('GITHUB_CLIENT_ID') or '',
             'github_client_secret'  : os.environ.get('GITHUB_CLIENT_SECRET') or '',
         })
+        
+        """ Setup Ignite Cache Connection
         cache_con = None
         while cache_con == None:
             try:
@@ -37,12 +39,12 @@ class AppModule(Module):
                 cache_con=None
                 print('Failed to connect to ignite, trying again in 5 seconds...')
                 sleep(5)
-
+        """
         ########## Binds ##########
         binder.bind(DbSettings, to=db_config)
         binder.bind(AppSettings, to=app_config)
-        binder.bind(Client, to=cache_con)
-        binder.bind(CacheService)
+        #binder.bind(Client, to=cache_con)
+        #binder.bind(CacheService)
         binder.bind(DbContext)
         binder.bind(DataSourceRepository)
         binder.bind(ItemRepository)
