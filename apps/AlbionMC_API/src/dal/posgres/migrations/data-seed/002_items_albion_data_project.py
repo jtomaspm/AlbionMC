@@ -1,5 +1,5 @@
 
-def get_data() -> list[dict]:
+def get_data() -> list[tuple[str, str, int, int]]:
     import requests
     url = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.txt"
 
@@ -45,25 +45,20 @@ def get_data() -> list[dict]:
         if len(parts) > 1:
             enchant = int(parts[1].strip())
 
-        parsed_items.append({
-            "id": item_id,
-            "unique_name": unique_name,
-            "english_name": english_name,
-            "tier": tier,
-            "enchant": enchant
-        })
+        parsed_items.append((unique_name, english_name, tier, enchant))
 
     return parsed_items
 
 from psycopg2.extensions import connection
 def migrate(conn: connection):
+    from psycopg2.extras import execute_values
     with conn.cursor() as cur:
-        for item in get_data():
-            try:
-                cur.execute("""
-                    INSERT INTO items (unique_name, english_name, tier, enchant, updated_by, created_by, data_source_id)
-                    VALUES (%s, %s, %s, %s, 'DataSeed', 'DataSeed', 2);
-                """, (item['unique_name'], item['english_name'], item['tier'], item['enchant']))
-                conn.commit()
-            except Exception as e:
-                print(f"Failed to insert item {item['unique_name']}: {e}")
+        try:
+            query = """
+                INSERT INTO items (unique_name, english_name, tier, enchant, updated_by, created_by, data_source_id)
+                VALUES (%s, %s, %s, %s, 'DataSeed', 'DataSeed', 2);
+            """
+            execute_values(cur, query, get_data(), page_size=1000)
+            conn.commit()
+        except Exception as e:
+            print(f"Failed to insert items: {e}")
