@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import subprocess
+import sys
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT, connection
 
@@ -84,15 +85,23 @@ def apply_migration(conn: connection, script_path: str, migration_name: str, mig
             except psycopg2.Error as e:
                 conn.rollback()
                 print(f"[ERROR] Failed to apply sql migration {migration_name}: {e}")
-                raise
         return
     try:
-        subprocess.run(['python', script_path], check=True)
+        if not script_path.endswith('.py'):
+            raise ValueError(f"Unsupported migration file type: {script_path}")
+        script_path = os.path.abspath(script_path)
+        sys.path.append(os.path.dirname(script_path))
+        migration_module = Path(script_path).stem
+        migration_func = __import__(migration_module, fromlist=['migrate']).migrate
+        if not callable(migration_func):
+            raise ValueError(f"Migration function 'migrate' not found in {migration_module}")
+        migration_func(conn)
+
         with conn.cursor() as cur:
             cur.execute("INSERT INTO migrations (name, type, origin) VALUES (%s, %s, %s)", (migration_name, migration_type, 'python'))
             conn.commit()
             print(f"[INFO] Python migration applied: {migration_name}")
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         print(f"[ERROR] Failed to apply python migration {migration_name}: {e}")
         raise
         
