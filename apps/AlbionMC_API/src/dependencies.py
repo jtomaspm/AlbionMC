@@ -18,7 +18,7 @@ from pyignite import Client
 class AppModule(Module):
     def configure(self, binder):
         db_config = DbSettings(**{
-            'dbname'    : os.environ.get('POSTGRES_DBNAME') or 'postgres',
+            'dbname'    : os.environ.get('POSTGRES_DBNAME') or 'AlbionMC',
             'user'      : os.environ.get('POSTGRES_USER') or 'postgres',
             'password'  : os.environ.get('POSTGRES_PASSWORD') or 'postgres123',
             'host'      : os.environ.get('POSTGRES_HOST') or '192.168.1.134',
