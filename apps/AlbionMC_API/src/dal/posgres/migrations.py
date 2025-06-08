@@ -7,28 +7,37 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT, connection
 
 
 def ensure_database(conn:connection, dbname:str):
-    conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-    cur = conn.cursor()
+    with conn.cursor() as cur:
+        cur.execute("SELECT 1 FROM pg_database WHERE datname = %s", (dbname,))
+        exists = cur.fetchone()
 
-    cur.execute("SELECT 1 FROM pg_database WHERE datname = %s", (dbname,))
-    exists = cur.fetchone()
+        if exists:
+            print(f"Database '{dbname}' already exists.")
+        else:
+            cur.execute(f"CREATE DATABASE {dbname}")
+            print(f"Database '{dbname}' created successfully.")
 
-    if exists:
-        print(f"Database '{dbname}' already exists.")
-    else:
-        cur.execute(f"CREATE DATABASE {dbname}")
-        print(f"Database '{dbname}' created successfully.")
-
-    cur.close()
-    conn.close()
+        conn.commit()
 
 def ensure_migrations_table(conn: connection):
     with conn.cursor() as cur:
         cur.execute("""
-            CREATE TYPE migration_origin AS ENUM ('sql', 'python');
+            DO $$
+            BEGIN
+                IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'migration_origin') THEN
+                    CREATE TYPE migration_origin AS ENUM ('sql', 'python');
+                END IF;
+            END
+            $$;
         """)
         cur.execute("""
-            CREATE TYPE migration_type AS ENUM ('schema', 'data-seed');
+            DO $$
+            BEGIN
+                IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'migration_type') THEN
+                    CREATE TYPE migration_type AS ENUM ('schema', 'data-seed');
+                END IF;
+            END
+            $$;
         """)
         conn.commit()
         cur.execute("""
@@ -36,7 +45,7 @@ def ensure_migrations_table(conn: connection):
                 id SERIAL PRIMARY KEY,
                 name TEXT UNIQUE NOT NULL,
                 origin migration_origin NOT NULL DEFAULT 'sql',
-                type migration_type NOT NULL DEFAULT 'migration',
+                type migration_type NOT NULL DEFAULT 'schema',
                 applied_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
             );
         """)
@@ -49,7 +58,7 @@ def get_applied_migrations(conn: connection):
         return {row[0] for row in cur.fetchall()}
 
 
-def get_migration_files(migrations_folder: str) -> tuple[list, list]:
+def get_migration_files(migrations_folder: str) -> tuple[list[str], list[str]]:
     return (
         sorted(
             [f for f in list_all_files(os.path.join(migrations_folder, 'schema')) if f.endswith('.sql') or f.endswith('.py')],
@@ -69,7 +78,7 @@ def apply_migration(conn: connection, script_path: str, migration_name: str, mig
         with conn.cursor() as cur:
             try:
                 cur.execute(sql)
-                cur.execute("INSERT INTO migrations (name, type, origin) VALUES (%s)", (migration_name, migration_type, 'sql'))
+                cur.execute("INSERT INTO migrations (name, type, origin) VALUES (%s, %s, %s)", (migration_name, migration_type, 'sql'))
                 conn.commit()
                 print(f"[INFO] Sql migration applied: {migration_name}")
             except psycopg2.Error as e:
@@ -80,7 +89,7 @@ def apply_migration(conn: connection, script_path: str, migration_name: str, mig
     try:
         subprocess.run(['python', script_path], check=True)
         with conn.cursor() as cur:
-            cur.execute("INSERT INTO migrations (name, type, origin) VALUES (%s)", (migration_name, migration_type, 'python'))
+            cur.execute("INSERT INTO migrations (name, type, origin) VALUES (%s, %s, %s)", (migration_name, migration_type, 'python'))
             conn.commit()
             print(f"[INFO] Python migration applied: {migration_name}")
     except subprocess.CalledProcessError as e:
@@ -91,8 +100,7 @@ def list_all_files(directory):
     return [str(path) for path in Path(directory).rglob("*") if path.is_file()]
 
 
-def migrate(migrations_folder: str, dbname: str, user: str, password: str, host='localhost', port='5432'):
-    conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
+def migrate(migrations_folder: str, conn: connection, dbname: str = 'AlbionMC'):
     ensure_database(conn, dbname)
     ensure_migrations_table(conn)
 
@@ -103,12 +111,11 @@ def migrate(migrations_folder: str, dbname: str, user: str, password: str, host=
         if file in applied:
             print(f"[INFO] Skipping already applied migration: {file}")
             continue
-        apply_migration(conn, file, file, 'schema')
+        apply_migration(conn, file, file.removeprefix(migrations_folder), 'schema')
     for file in data_seed_files:
         if file in applied:
             print(f"[INFO] Skipping already applied migration: {file}")
             continue
-        apply_migration(conn, file, file, 'data-seed')
+        apply_migration(conn, file, file.removeprefix(migrations_folder), 'data-seed')
 
-    conn.close()
     print("[INFO] All migrations applied successfully.")
