@@ -21,43 +21,36 @@ git clone https://github.com/jtomaspm/AlbionMC albionmc
 cd albionmc
 ```
 
-4. **Using Ninja**:  
+4. **Using Docker-Compose**: 
 
-Build:
-```
-cmake -S . -B build -G Ninja -DCMAKE_MAKE_PROGRAM=ninja
-```
 Run:
 ```
-ninja -C build run
+./scripts/run.sh <env>
 ```
-Dev:
+
+Clean-Run:
 ```
-ninja -C build dev
+./scripts/run.sh <env> clean
 ```
+
 Stop:
 ```
-ninja -C build kill
-```
-Clear:
-```
-ninja -C build clear
+./scripts/stop.sh <env>
 ```
 
-5. **Using Docker-Compose**: 
+Clean-Stop:
+```
+./scripts/stop.sh <env> clean
+```
 
-Open a terminal and navigate to the apps directory:
+# Environments
+
+To list environments use:
 ```
-cd apps
+ls ./infrastructure/docker
 ```
-Run:
-```
-docker-compose up -d
-```
-Dev:
-```
-docker-compose up -d --build api frontend
-```
+
+You must provide a `.env` for the desired environment.  
 
 # Contribution
 Contributions are welcome! If you'd like to improve AlbionMC, feel free to send pull requests or open issues in the GitHub repository.
