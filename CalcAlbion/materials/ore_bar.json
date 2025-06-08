@@ -20,6 +20,13 @@
       "tier": 4,
       "enchantment": null,
       "item_value": 4
+    },
+    {
+      "city": "Martlock",
+      "price": 80,
+      "tier": 4,
+      "enchantment": 1,
+      "item_value": 4
     }
   ]
 }
