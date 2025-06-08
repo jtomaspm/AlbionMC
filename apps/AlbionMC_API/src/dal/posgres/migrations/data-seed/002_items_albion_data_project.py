@@ -1,5 +1,5 @@
 
-def get_data() -> list[tuple[str, str, int, int]]:
+def get_data() -> list[tuple[str, str, int, int, str, str, int]]:
     import requests
     url = "https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.txt"
 
@@ -45,7 +45,7 @@ def get_data() -> list[tuple[str, str, int, int]]:
         if len(parts) > 1:
             enchant = int(parts[1].strip())
 
-        parsed_items.append((unique_name, english_name, tier, enchant))
+        parsed_items.append((unique_name, english_name, tier, enchant, 'DataSeed', 'DataSeed', 2))
 
     return parsed_items
 
@@ -56,7 +56,7 @@ def migrate(conn: connection):
         try:
             query = """
                 INSERT INTO items (unique_name, english_name, tier, enchant, updated_by, created_by, data_source_id)
-                VALUES (%s, %s, %s, %s, 'DataSeed', 'DataSeed', 2);
+                VALUES %s
             """
             execute_values(cur, query, get_data(), page_size=1000)
             conn.commit()
