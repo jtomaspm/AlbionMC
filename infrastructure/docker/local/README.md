@@ -1,4 +1,4 @@
-# apps
+# local
 
 Enviroment variables must be set.
 
