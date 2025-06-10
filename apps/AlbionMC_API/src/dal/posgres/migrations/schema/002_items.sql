@@ -1,8 +1,8 @@
 CREATE TABLE items (
     id SERIAL PRIMARY KEY,
-    unique_name VARCHAR(255) UNIQUE NOT NULL DEFAULT '',
+    unique_name VARCHAR(255) NOT NULL DEFAULT '',
     english_name VARCHAR(255) DEFAULT '',
-    tags VARCHAR(20)[] DEFAULT '{}'::VARCHAR[],
+    tags VARCHAR(50)[] DEFAULT '{}'::VARCHAR[],
     tier SMALLINT DEFAULT 0,
     enchant SMALLINT DEFAULT 0,
     item_description VARCHAR(255) DEFAULT '',
