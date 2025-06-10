@@ -21,7 +21,7 @@ class AppModule(Module):
             'dbname'    : os.environ.get('POSTGRES_DBNAME') or 'AlbionMC',
             'user'      : os.environ.get('POSTGRES_USER') or 'postgres',
             'password'  : os.environ.get('POSTGRES_PASSWORD') or 'postgres123',
-            'host'      : os.environ.get('POSTGRES_HOST') or '192.168.1.134',
+            'host'      : os.environ.get('POSTGRES_HOST') or 'localhost',
             'port'      : os.environ.get('POSTGRES_PORT') or '5432',
         })
         app_config = AppSettings(**{
