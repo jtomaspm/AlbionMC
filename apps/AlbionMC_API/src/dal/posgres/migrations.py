@@ -115,6 +115,8 @@ def migrate(migrations_folder: str, conn: connection, dbname: str = 'AlbionMC'):
 
     applied = get_applied_migrations(conn)
     schema_files, data_seed_files = get_migration_files(migrations_folder)
+    schema_files.sort()
+    data_seed_files.sort()
 
     for file in schema_files:
         migration_name = file.removeprefix(migrations_folder)
