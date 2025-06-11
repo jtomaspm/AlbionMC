@@ -172,6 +172,5 @@ def migrate(conn: connection):
 
 import psycopg2
 if __name__ == "__main__":
-    get_data()
     with psycopg2.connect(dbname='AlbionMC', user='postgres', password='postgres123', host='localhost', port='5432') as conn:
         migrate(conn)
