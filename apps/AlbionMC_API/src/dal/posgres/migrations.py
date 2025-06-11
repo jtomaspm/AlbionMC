@@ -117,14 +117,16 @@ def migrate(migrations_folder: str, conn: connection, dbname: str = 'AlbionMC'):
     schema_files, data_seed_files = get_migration_files(migrations_folder)
 
     for file in schema_files:
-        if file in applied:
+        migration_name = file.removeprefix(migrations_folder)
+        if migration_name in applied:
             print(f"[INFO] Skipping already applied migration: {file}")
             continue
-        apply_migration(conn, file, file.removeprefix(migrations_folder), 'schema')
+        apply_migration(conn, file, migration_name, 'schema')
     for file in data_seed_files:
-        if file in applied:
+        migration_name = file.removeprefix(migrations_folder)
+        if migration_name in applied:
             print(f"[INFO] Skipping already applied migration: {file}")
             continue
-        apply_migration(conn, file, file.removeprefix(migrations_folder), 'data-seed')
+        apply_migration(conn, file, migration_name, 'data-seed')
 
     print("[INFO] All migrations applied successfully.")
